@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heydin-Kayser | Acceso</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(rgba(10, 15, 40, 0.85), rgba(10, 15, 40, 0.9)), 
+                        url('https://raw.githubusercontent.com/welding30001994/heydin-kayser/refs/heads/main/heydin-kayser.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        /* Logo y nombre */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .company-name {
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #4a90e2, #63b3ff, #4a90e2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+
+        .company-tagline {
+            font-size: 1rem;
+            color: #a0c8ff;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        /* Tarjeta de formulario */
+        .form-card {
+            background: rgba(15, 25, 50, 0.85);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(74, 144, 226, 0.2);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* Selector de formulario */
+        .form-selector {
+            display: flex;
+            background: rgba(20, 35, 70, 0.7);
+            border-radius: 15px;
+            padding: 5px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(74, 144, 226, 0.3);
+        }
+
+        .form-option {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            color: #a0c8ff;
+        }
+
+        .form-option.active {
+            background: linear-gradient(to right, #4a90e2, #63b3ff);
+            color: white;
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+        }
+
+        .form-option i {
+            margin-right: 10px;
+        }
+
+        /* Formularios */
+        .form {
+            display: none;
+        }
+
+        .form.active {
+            display: block;
+        }
+
+        .form-title {
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            color: #63b3ff;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4a90e2;
+        }
+
+        .input-with-icon input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border-radius: 10px;
+            border: 1px solid rgba(74, 144, 226, 0.3);
+            background: rgba(10, 20, 40, 0.7);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-with-icon input:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+
+        /* Botones */
+        .btn {
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #4a90e2, #63b3ff);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, #3a80d2, #53a3ff);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Divider */
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+            color: #a0c8ff;
+        }
+
+        .divider::before, .divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        /* Redes sociales */
+        .social-login {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(20, 40, 80, 0.5);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .social-btn:hover {
+            background: rgba(30, 60, 120, 0.7);
+            transform: translateY(-2px);
+        }
+
+        /* Enlaces adicionales */
+        .form-links {
+            text-align: center;
+            margin-top: 20px;
+            color: #a0c8ff;
+            font-size: 0.9rem;
+        }
+
+        .form-links a {
+            color: #63b3ff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mensajes */
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .message.success {
+            background: rgba(46, 125, 50, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            color: #a5d6a7;
+        }
+
+        .message.error {
+            background: rgba(198, 40, 40, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.5);
+            color: #ef9a9a;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #a0c8ff;
+            font-size: 0.9rem;
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                max-width: 90%;
+            }
+
+            .form-card {
+                padding: 30px;
+            }
+
+            .company-name {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-card {
+                padding: 25px 20px;
+            }
+
+            .form-option {
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            .social-login {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo y nombre -->
+        <div class="logo-section">
+            <h1 class="company-name">HEYDIN-KAYSER</h1>
+            <p class="company-tagline">VENTA DE PRODUCTOS DE ALTA CALIDAD</p>
+        </div>
+
+        <!-- Tarjeta de formulario -->
+        <div class="form-card">
+            <!-- Selector de formulario -->
+            <div class="form-selector">
+                <div class="form-option active" id="loginOption">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </div>
+                <div class="form-option" id="registerOption">
+                    <i class="fas fa-user-plus"></i> Registrarse
+                </div>
+            </div>
+
+            <!-- Mensajes -->
+            <div class="message" id="message"></div>
+
+            <!-- Formulario de Login -->
+            <div class="form active" id="loginForm">
+                <h2 class="form-title">Iniciar Sesión</h2>
+                
+                <form id="loginFormElement">
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                    </button>
+                </form>
+                
+                <div class="divider">O continúa con</div>
+                
+                <div class="social-login">
+                    <button class="social-btn" id="googleLoginBtn">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                    <button class="social-btn" id="facebookLoginBtn">
+                        <i class="fab fa-facebook-f"></i> Facebook
+                    </button>
+                </div>
+                
+                <div class="form-links">
+                    <a href="#" id="forgotPassword">¿Olvidaste tu contraseña?</a>
+                </div>
+            </div>
+            
+            <!-- Formulario de Registro -->
+            <div class="form" id="registerForm">
+                <h2 class="form-title">Crear Cuenta</h2>
+                
+                <form id="registerFormElement">
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="registerName" placeholder="Nombre completo" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="registerEmail" placeholder="Correo electrónico" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="registerPassword" placeholder="Contraseña (mínimo 6 caracteres)" required minlength="6">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="registerConfirmPassword" placeholder="Confirmar contraseña" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="registerBtn">
+                        <i class="fas fa-user-plus"></i> Crear Cuenta
+                    </button>
+                </form>
+                
+                <div class="divider">O regístrate con</div>
+                
+                <div class="social-login">
+                    <button class="social-btn" id="googleRegisterBtn">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                    <button class="social-btn" id="facebookRegisterBtn">
+                        <i class="fab fa-facebook-f"></i> Facebook
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2023 Heydin-Kayser. Todos los derechos reservados.</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCpFnSLx-ZUq6j27T-w_nvsdSvUrNs688g",
+            authDomain: "heydin-kayser.firebaseapp.com",
+            projectId: "heydin-kayser",
+            storageBucket: "heydin-kayser.firebasestorage.app",
+            messagingSenderId: "231005618306",
+            appId: "1:231005618306:web:b349379b513145b6e6349b",
+            measurementId: "G-0F9T839VVZ"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Elementos del DOM
+        const loginOption = document.getElementById('loginOption');
+        const registerOption = document.getElementById('registerOption');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const loginFormElement = document.getElementById('loginFormElement');
+        const registerFormElement = document.getElementById('registerFormElement');
+        const messageElement = document.getElementById('message');
+        const forgotPasswordLink = document.getElementById('forgotPassword');
+
+        // Cambiar entre formularios
+        loginOption.addEventListener('click', () => switchForm('login'));
+        registerOption.addEventListener('click', () => switchForm('register'));
+
+        function switchForm(formType) {
+            if (formType === 'login') {
+                loginOption.classList.add('active');
+                registerOption.classList.remove('active');
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+                clearMessage();
+            } else {
+                registerOption.classList.add('active');
+                loginOption.classList.remove('active');
+                registerForm.classList.add('active');
+                loginForm.classList.remove('active');
+                clearMessage();
+            }
+        }
+
+        // Mostrar mensajes
+        function showMessage(text, type) {
+            messageElement.textContent = text;
+            messageElement.className = `message ${type} show`;
+            
+            if (type === 'success') {
+                setTimeout(clearMessage, 3000);
+            }
+        }
+
+        function clearMessage() {
+            messageElement.classList.remove('show');
+        }
+
+        // Manejar registro
+        registerFormElement.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            
+            // Validaciones
+            if (password !== confirmPassword) {
+                showMessage('Las contraseñas no coinciden', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showMessage('La contraseña debe tener al menos 6 caracteres', 'error');
+                return;
+            }
+            
+            // Mostrar carga
+            const registerBtn = document.getElementById('registerBtn');
+            const originalText = registerBtn.innerHTML;
+            registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creando cuenta...';
+            registerBtn.disabled = true;
+            
+            try {
+                // Crear usuario en Firebase
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Actualizar perfil con nombre
+                await user.updateProfile({
+                    displayName: name
+                });
+                
+                showMessage(`¡Cuenta creada exitosamente para ${name}!`, 'success');
+                
+                // Limpiar formulario
+                registerFormElement.reset();
+                
+                // Cambiar a formulario de login después de 2 segundos
+                setTimeout(() => {
+                    switchForm('login');
+                    document.getElementById('loginEmail').value = email;
+                }, 2000);
+                
+            } catch (error) {
+                let errorMessage = 'Error al crear la cuenta: ';
+                
+                switch(error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = 'Este correo ya está registrado. Inicia sesión en su lugar.';
+                        setTimeout(() => {
+                            switchForm('login');
+                            document.getElementById('loginEmail').value = email;
+                        }, 2000);
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'El correo electrónico no es válido.';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = 'La contraseña es demasiado débil.';
+                        break;
+                    default:
+                        errorMessage += error.message;
+                }
+                
+                showMessage(errorMessage, 'error');
+                console.error('Error en registro:', error);
+            } finally {
+                // Restaurar botón
+                registerBtn.innerHTML = originalText;
+                registerBtn.disabled = false;
+            }
+        });
+
+        // Manejar login
+        loginFormElement.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Mostrar carga
+            const loginBtn = document.getElementById('loginBtn');
+            const originalText = loginBtn.innerHTML;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Iniciando sesión...';
+            loginBtn.disabled = true;
+            
+            try {
+                // Iniciar sesión en Firebase
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                showMessage(`¡Bienvenido ${user.displayName || email}!`, 'success');
+                
+                // Redirigir a home.html después de 1.5 segundos
+                setTimeout(() => {
+                    window.location.href = 'home.html';
+                }, 1500);
+                
+            } catch (error) {
+                let errorMessage = 'Error al iniciar sesión: ';
+                
+                switch(error.code) {
+                    case 'auth/user-not-found':
+                        errorMessage = 'No existe una cuenta con este correo. Regístrate primero.';
+                        setTimeout(() => {
+                            switchForm('register');
+                            document.getElementById('registerEmail').value = email;
+                        }, 2000);
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage = 'Contraseña incorrecta.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'El correo electrónico no es válido.';
+                        break;
+                    default:
+                        errorMessage += error.message;
+                }
+                
+                showMessage(errorMessage, 'error');
+                console.error('Error en login:', error);
+            } finally {
+                // Restaurar botón
+                loginBtn.innerHTML = originalText;
+                loginBtn.disabled = false;
+            }
+        });
+
+        // Recuperar contraseña
+        forgotPasswordLink.addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            
+            if (!email) {
+                showMessage('Por favor, ingresa tu correo electrónico para recuperar la contraseña', 'error');
+                return;
+            }
+            
+            try {
+                await auth.sendPasswordResetEmail(email);
+                showMessage(`Se ha enviado un enlace para restablecer la contraseña a ${email}`, 'success');
+            } catch (error) {
+                showMessage('Error al enviar el correo de recuperación: ' + error.message, 'error');
+            }
+        });
+
+        // Login con Google (simulado para este ejemplo)
+        document.getElementById('googleLoginBtn').addEventListener('click', function() {
+            showMessage('Inicio con Google está en desarrollo', 'info');
+        });
+
+        document.getElementById('googleRegisterBtn').addEventListener('click', function() {
+            showMessage('Registro con Google está en desarrollo', 'info');
+        });
+
+        document.getElementById('facebookLoginBtn').addEventListener('click', function() {
+            showMessage('Inicio con Facebook está en desarrollo', 'info');
+        });
+
+        document.getElementById('facebookRegisterBtn').addEventListener('click', function() {
+            showMessage('Registro con Facebook está en desarrollo', 'info');
+        });
+
+        // Verificar si ya hay un usuario autenticado
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // Si ya está autenticado, redirigir a home.html
+                window.location.href = 'home.html';
+            }
+        });
+    </script>
+</body>
+</html>

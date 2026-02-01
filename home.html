@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heydin-Kayser | Inicio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(rgba(10, 15, 40, 0.9), rgba(10, 15, 40, 0.95)), 
+                        url('https://raw.githubusercontent.com/welding30001994/heydin-kayser/refs/heads/main/heydin-kayser.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(15, 25, 50, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(74, 144, 226, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .company-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #4a90e2, #63b3ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(to right, #4a90e2, #63b3ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .user-email {
+            font-size: 0.85rem;
+            color: #a0c8ff;
+        }
+
+        .logout-btn {
+            background: rgba(198, 40, 40, 0.2);
+            color: #ef9a9a;
+            border: 1px solid rgba(244, 67, 54, 0.5);
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: rgba(198, 40, 40, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #63b3ff;
+        }
+
+        .welcome-text {
+            color: #a0c8ff;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Categories */
+        .categories-section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #63b3ff;
+            text-align: center;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .category-card {
+            background: rgba(20, 35, 70, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(74, 144, 226, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(74, 144, 226, 0.2);
+            border-color: rgba(74, 144, 226, 0.5);
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+            color: #4a90e2;
+            margin-bottom: 20px;
+        }
+
+        .category-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .category-desc {
+            color: #a0c8ff;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Featured Products */
+        .products-section {
+            margin-bottom: 60px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: rgba(20, 35, 70, 0.7);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(74, 144, 226, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(74, 144, 226, 0.2);
+        }
+
+        .product-image {
+            height: 200px;
+            background: linear-gradient(45deg, #1a237e, #283593);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .product-price {
+            color: #63b3ff;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .product-desc {
+            color: #a0c8ff;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .add-to-cart {
+            background: linear-gradient(to right, #4a90e2, #63b3ff);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background: linear-gradient(to right, #3a80d2, #53a3ff);
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(15, 25, 50, 0.9);
+            padding: 30px 40px;
+            text-align: center;
+            border-top: 1px solid rgba(74, 144, 226, 0.3);
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #4a90e2, #63b3ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .footer-links a {
+            color: #a0c8ff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #63b3ff;
+        }
+
+        .copyright {
+            color: #a0c8ff;
+            font-size: 0.9rem;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .welcome-title {
+                font-size: 2rem;
+            }
+
+            .categories-grid,
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .category-card, .product-card {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: rgba(74, 144, 226, 0.1);
+            border: 1px solid rgba(74, 144, 226, 0.3);
+            color: #63b3ff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            background: rgba(74, 144, 226, 0.2);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-store"></i>
+            <h1 class="company-name">HEYDIN-KAYSER</h1>
+        </div>
+        
+        <div class="user-info">
+            <div class="user-avatar" id="userAvatar">U</div>
+            <div class="user-details">
+                <span class="user-name" id="userName">Usuario</span>
+                <span class="user-email" id="userEmail">usuario@ejemplo.com</span>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <h2 class="welcome-title" id="welcomeTitle">¡Bienvenido a Heydin-Kayser!</h2>
+            <p class="welcome-text">
+                Descubre nuestra exclusiva selección de productos de alta calidad: 
+                deliciosas comidas, elegantes muebles y hermosa bisutería.
+            </p>
+            
+            <div class="quick-actions">
+                <button class="action-btn" id="profileBtn">
+                    <i class="fas fa-user"></i> Mi Perfil
+                </button>
+                <button class="action-btn" id="cartBtn">
+                    <i class="fas fa-shopping-cart"></i> Carrito (0)
+                </button>
+                <button class="action-btn" id="ordersBtn">
+                    <i class="fas fa-box"></i> Mis Pedidos
+                </button>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="categories-section">
+            <h2 class="section-title">Nuestras Categorías</h2>
+            <div class="categories-grid">
+                <div class="category-card" onclick="showCategory('food')">
+                    <div class="category-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3 class="category-title">Comidas</h3>
+                    <p class="category-desc">
+                        Deliciosos platillos gourmet, ingredientes frescos y opciones para todos los gustos.
+                    </p>
+                </div>
+                
+                <div class="category-card" onclick="showCategory('furniture')">
+                    <div class="category-icon">
+                        <i class="fas fa-couch"></i>
+                    </div>
+                    <h3 class="category-title">Muebles</h3>
+                    <p class="category-desc">
+                        Mobiliario elegante y funcional para transformar tus espacios en hogares únicos.
+                    </p>
+                </div>
+                
+                <div class="category-card" onclick="showCategory('jewelry')">
+                    <div class="category-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3 class="category-title">Bisutería</h3>
+                    <p class="category-desc">
+                        Accesorios únicos y elegantes que complementan tu estilo personal con distinción.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products -->
+        <section class="products-section">
+            <h2 class="section-title">Productos Destacados</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-hamburger"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Combo Gourmet Premium</h3>
+                        <div class="product-price">$49.99</div>
+                        <p class="product-desc">
+                            Selección exclusiva de platillos gourmet preparados con ingredientes premium.
+                        </p>
+                        <button class="add-to-cart">
+                            <i class="fas fa-cart-plus"></i> Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-chair"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Sofá Moderno</h3>
+                        <div class="product-price">$599.99</div>
+                        <p class="product-desc">
+                            Sofá elegante con diseño contemporáneo y máxima comodidad para tu sala.
+                        </p>
+                        <button class="add-to-cart">
+                            <i class="fas fa-cart-plus"></i> Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-ring"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Collar Elegante</h3>
+                        <div class="product-price">$89.99</div>
+                        <p class="product-desc">
+                            Collar de plata con detalles únicos, perfecto para ocasiones especiales.
+                        </p>
+                        <button class="add-to-cart">
+                            <i class="fas fa-cart-plus"></i> Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">HEYDIN-KAYSER</div>
+            
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-home"></i> Inicio</a>
+                <a href="#"><i class="fas fa-box"></i> Productos</a>
+                <a href="#"><i class="fas fa-shopping-cart"></i> Carrito</a>
+                <a href="#"><i class="fas fa-user"></i> Cuenta</a>
+                <a href="#"><i class="fas fa-question-circle"></i> Ayuda</a>
+            </div>
+            
+            <div class="copyright">
+                © 2023 Heydin-Kayser. Todos los derechos reservados. | 
+                Venta de comidas, muebles y bisutería de alta calidad
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCpFnSLx-ZUq6j27T-w_nvsdSvUrNs688g",
+            authDomain: "heydin-kayser.firebaseapp.com",
+            projectId: "heydin-kayser",
+            storageBucket: "heydin-kayser.firebasestorage.app",
+            messagingSenderId: "231005618306",
+            appId: "1:231005618306:web:b349379b513145b6e6349b",
+            measurementId: "G-0F9T839VVZ"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Elementos del DOM
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+        const userEmail = document.getElementById('userEmail');
+        const welcomeTitle = document.getElementById('welcomeTitle');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const profileBtn = document.getElementById('profileBtn');
+        const cartBtn = document.getElementById('cartBtn');
+        const ordersBtn = document.getElementById('ordersBtn');
+
+        // Verificar autenticación
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // Actualizar información del usuario
+                userName.textContent = user.displayName || 'Usuario';
+                userEmail.textContent = user.email;
+                welcomeTitle.textContent = `¡Bienvenido ${user.displayName || user.email}!`;
+                
+                // Generar inicial para avatar
+                const initials = user.displayName 
+                    ? user.displayName.split(' ').map(n => n[0]).join('').toUpperCase()
+                    : user.email[0].toUpperCase();
+                userAvatar.textContent = initials;
+                
+            } else {
+                // Si no hay usuario, redirigir al login
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Cerrar sesión
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await auth.signOut();
+                window.location.href = 'index.html';
+            } catch (error) {
+                alert('Error al cerrar sesión: ' + error.message);
+            }
+        });
+
+        // Funciones de navegación
+        profileBtn.addEventListener('click', () => {
+            alert('Funcionalidad de perfil en desarrollo');
+        });
+
+        cartBtn.addEventListener('click', () => {
+            alert('Funcionalidad de carrito en desarrollo');
+        });
+
+        ordersBtn.addEventListener('click', () => {
+            alert('Funcionalidad de pedidos en desarrollo');
+        });
+
+        // Mostrar categoría
+        function showCategory(category) {
+            let categoryName = '';
+            switch(category) {
+                case 'food': categoryName = 'Comidas'; break;
+                case 'furniture': categoryName = 'Muebles'; break;
+                case 'jewelry': categoryName = 'Bisutería'; break;
+            }
+            alert(`Explorando categoría: ${categoryName}\nEsta funcionalidad está en desarrollo`);
+        }
+
+        // Agregar al carrito
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const productTitle = this.closest('.product-card').querySelector('.product-title').textContent;
+                const currentCount = parseInt(cartBtn.textContent.match(/\((\d+)\)/)[1]) || 0;
+                cartBtn.innerHTML = `<i class="fas fa-shopping-cart"></i> Carrito (${currentCount + 1})`;
+                alert(`"${productTitle}" agregado al carrito`);
+            });
+        });
+
+        // Actualizar hora de bienvenida
+        function updateWelcomeTime() {
+            const hour = new Date().getHours();
+            let greeting = '';
+            
+            if (hour < 12) greeting = 'Buenos días';
+            else if (hour < 19) greeting = 'Buenas tardes';
+            else greeting = 'Buenas noches';
+            
+            if (auth.currentUser) {
+                welcomeTitle.textContent = `${greeting}, ${auth.currentUser.displayName || auth.currentUser.email}!`;
+            }
+        }
+
+        // Actualizar cada minuto
+        updateWelcomeTime();
+        setInterval(updateWelcomeTime, 60000);
+    </script>
+</body>
+</html>
