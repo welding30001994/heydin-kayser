@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comida | Heydin-Kayser</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* TODO TU CSS SE MANTIENE IGUAL */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(rgba(10, 15, 40, 0.9), rgba(10, 15, 40, 0.95));
+            color: #fff;
+        }
+
+        /* ... TODO EL CSS SE MANTIENE IGUAL ... */
+        
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo" onclick="window.location.href='home.html'">
+            <i class="fas fa-store"></i>
+            <h1 class="company-name">HEYDIN-KAYSER</h1>
+        </div>
+        
+        <nav class="nav-menu">
+            <a href="home.html" class="nav-link">
+                <i class="fas fa-home"></i> Inicio
+            </a>
+            <a href="comida.html" class="nav-link active">
+                <i class="fas fa-utensils"></i> Comida
+            </a>
+            <a href="muebles.html" class="nav-link">
+                <i class="fas fa-couch"></i> Muebles
+            </a>
+            <a href="juguetes.html" class="nav-link">
+                <i class="fas fa-gamepad"></i> Juguetes
+            </a>
+            <a href="bisuteria.html" class="nav-link">
+                <i class="fas fa-gem"></i> Bisutería
+            </a>
+        </nav>
+        
+        <div class="user-section">
+            <div class="cart-icon" id="cartIcon">
+                <i class="fas fa-shopping-cart fa-lg"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+            
+            <div class="user-avatar" id="userAvatar">U</div>
+            
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </button>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1 class="page-title">Comidas Gourmet</h1>
+        <p class="page-subtitle">
+            Descubre nuestra selección de deliciosos platillos preparados con los mejores ingredientes. 
+            Desde combos familiares hasta opciones individuales para todos los gustos.
+        </p>
+    </section>
+
+    <!-- Products -->
+    <section class="products-section">
+        <div class="products-grid" id="productsGrid">
+            <!-- Los productos de comida se cargarán aquí -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Heydin-Kayser</h3>
+                <p style="color: #a0c8ff; line-height: 1.6;">
+                    Tu tienda de confianza para productos de alta calidad. 
+                    Comidas, muebles, juguetes y bisutería con los mejores precios.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Categorías</h3>
+                <div class="footer-links">
+                    <a href="comida.html">
+                        <i class="fas fa-utensils"></i> Comidas
+                    </a>
+                    <a href="muebles.html">
+                        <i class="fas fa-couch"></i> Muebles
+                    </a>
+                    <a href="juguetes.html">
+                        <i class="fas fa-gamepad"></i> Juguetes
+                    </a>
+                    <a href="bisuteria.html">
+                        <i class="fas fa-gem"></i> Bisutería
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <div class="footer-links">
+                    <a href="tel:+593997595515">
+                        <i class="fas fa-phone"></i> +593 99 759 5515
+                    </a>
+                    <a href="mailto:ventas@heydin-kayser.com">
+                        <i class="fas fa-envelope"></i> ventas@heydin-kayser.com
+                    </a>
+                    <a href="https://wa.me/593997595515" target="_blank">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            © 2023 Heydin-Kayser. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart"></i> Carrito de Compras</h3>
+            <button class="close-cart" id="closeCart">&times;</button>
+        </div>
+        
+        <div class="cart-content">
+            <div class="cart-items" id="cartItems">
+                <!-- Los productos del carrito se mostrarán aquí -->
+            </div>
+            
+            <!-- Balance Summary -->
+            <div class="balance-summary" id="balanceSummary">
+                <!-- El resumen de balance se cargará aquí -->
+            </div>
+        </div>
+        
+        <div class="cart-footer">
+            <button class="checkout-btn" id="checkoutBtn">
+                <i class="fab fa-whatsapp"></i> Completar Pedido por WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal">
+        <button class="image-nav prev" id="prevImage">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <div class="image-modal-content">
+            <button class="close-image-modal" id="closeImageModal">&times;</button>
+            <img id="modalImage" src="" alt="Imagen ampliada">
+        </div>
+        
+        <button class="image-nav next" id="nextImage">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/593997595515" class="whatsapp-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Firebase SDK Modular (VERSIÓN CORREGIDA) -->
+    <script type="module">
+        // Importar los módulos necesarios de Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged, 
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { 
+            getFirestore,
+            collection,
+            query,
+            where,
+            orderBy,
+            onSnapshot,
+            doc,
+            updateDoc
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Configuración de Firebase (¡MISMA QUE HOME.HTML!)
+        const firebaseConfig = {
+            apiKey: "AIzaSyCpFnSLx-ZUq6j27T-w_nvsdSvUrNs688g",
+            authDomain: "heyding-kayser.firebaseapp.com",
+            projectId: "heyding-kayser", // ¡CON "G"!
+            storageBucket: "heyding-kayser.firebasestorage.app",
+            messagingSenderId: "231005618306",
+            appId: "1:231005618306:web:b349379b513145b6e6349b",
+            measurementId: "G-0F9T839VVZ"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Variables globales
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let inventory = [];
+        let currentUser = null;
+        let currentImageIndex = 0;
+        let currentProductImages = [];
+        let unsubscribeProducts = null;
+
+        // Elementos del DOM
+        const cartIcon = document.getElementById('cartIcon');
+        const cartCount = document.getElementById('cartCount');
+        const cartModal = document.getElementById('cartModal');
+        const closeCart = document.getElementById('closeCart');
+        const cartItems = document.getElementById('cartItems');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const userAvatar = document.getElementById('userAvatar');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const productsGrid = document.getElementById('productsGrid');
+        const balanceSummary = document.getElementById('balanceSummary');
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const closeImageModal = document.getElementById('closeImageModal');
+        const prevImageBtn = document.getElementById('prevImage');
+        const nextImageBtn = document.getElementById('nextImage');
+
+        // Actualizar contador del carrito
+        function updateCartCount() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            if (totalItems > 0) {
+                cartCount.classList.add('bounce');
+                setTimeout(() => cartCount.classList.remove('bounce'), 500);
+            }
+        }
+
+        // Cargar productos de comida desde Firestore en tiempo real
+        function loadComidaProducts() {
+            // Cancelar suscripción anterior si existe
+            if (unsubscribeProducts) {
+                unsubscribeProducts();
+            }
+            
+            // Suscribirse a cambios en tiempo real
+            const q = query(
+                collection(db, "products"),
+                where("category", "==", "comida"),
+                orderBy("name")
+            );
+            
+            unsubscribeProducts = onSnapshot(q, (snapshot) => {
+                inventory = [];
+                productsGrid.innerHTML = '';
+                
+                snapshot.forEach((doc) => {
+                    const product = {
+                        id: doc.id,
+                        ...doc.data()
+                    };
+                    inventory.push(product);
+                });
+                
+                renderComidaProducts();
+                
+                // Guardar en localStorage como backup
+                localStorage.setItem('inventory', JSON.stringify(inventory));
+                
+                // Si no hay productos, mostrar mensaje
+                if (inventory.length === 0) {
+                    showNoProductsMessage();
+                }
+            }, (error) => {
+                console.error("Error cargando productos:", error);
+                // Intentar cargar desde localStorage como fallback
+                const localInventory = JSON.parse(localStorage.getItem('inventory')) || [];
+                inventory = localInventory.filter(p => p.category === 'comida');
+                renderComidaProducts();
+                showNotification('Usando datos locales. Error de conexión.', 'error');
+            });
+        }
+
+        // Función para renderizar productos de comida
+        function renderComidaProducts() {
+            productsGrid.innerHTML = '';
+            
+            if (inventory.length === 0) {
+                showNoProductsMessage();
+                return;
+            }
+            
+            inventory.forEach((product, index) => {
+                const isOutOfStock = product.stock === 0;
+                const isLowStock = product.stock > 0 && product.stock < 5;
+                const inCart = cart.find(item => item.id === product.id);
+                const cartQuantity = inCart ? inCart.quantity : 0;
+                
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-image" onclick="openImageModal(${index})">
+                        <img src="${product.image || 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}" 
+                             alt="${product.name}"
+                             onerror="this.src='https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
+                        ${isOutOfStock ? '<div class="product-badge">AGOTADO</div>' : ''}
+                        ${isLowStock ? '<div class="product-badge" style="background: linear-gradient(to right, #ffa502, #ff7f00);">ÚLTIMAS UNIDADES</div>' : ''}
+                    </div>
+                    <div class="product-info">
+                        <div class="product-header">
+                            <h3 class="product-title">${product.name}</h3>
+                            <div class="product-price">$${parseFloat(product.price || 0).toFixed(2)}</div>
+                        </div>
+                        <div class="product-code">
+                            <i class="fas fa-barcode"></i> Código: ${product.id}
+                        </div>
+                        <p class="product-desc">${product.description || 'Sin descripción'}</p>
+                        <div class="product-stock">
+                            <span class="stock-label">Stock disponible:</span>
+                            <span class="stock-amount ${product.stock < 5 ? 'stock-low' : 'stock-ok'}">
+                                ${product.stock || 0} unidad${product.stock !== 1 ? 'es' : ''}
+                            </span>
+                        </div>
+                        
+                        <!-- Controles de cantidad -->
+                        <div class="product-quantity-controls">
+                            <div class="quantity-label">Cantidad:</div>
+                            <div class="quantity-selector">
+                                <button class="qty-btn" onclick="updateProductQuantity('${product.id}', -1)" 
+                                        ${cartQuantity <= 1 || isOutOfStock ? 'disabled' : ''}>
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <input type="number" class="quantity-input" id="qty-${product.id}" 
+                                       value="${cartQuantity}" min="1" max="${product.stock || 0}" 
+                                       onchange="updateProductQuantityInput('${product.id}', this.value)"
+                                       ${isOutOfStock ? 'disabled' : ''}>
+                                <button class="qty-btn" onclick="updateProductQuantity('${product.id}', 1)" 
+                                        ${cartQuantity >= (product.stock || 0) || isOutOfStock ? 'disabled' : ''}>
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="product-actions">
+                            <button class="add-to-cart-btn" onclick="addToCart('${product.id}')" 
+                                    ${isOutOfStock ? 'disabled' : ''}>
+                                <i class="fas fa-cart-plus"></i> 
+                                ${cartQuantity > 0 ? `Actualizar (${cartQuantity})` : 'Agregar al Carrito'}
+                            </button>
+                        </div>
+                        
+                        <!-- Compra directa solo cuando hay cantidad -->
+                        ${cartQuantity > 0 ? `
+                            <div class="direct-purchase">
+                                <button class="direct-purchase-btn" onclick="buyDirect('${product.id}')">
+                                    <i class="fab fa-whatsapp"></i> Comprar ${cartQuantity} unidad${cartQuantity !== 1 ? 'es' : ''} ahora
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                productsGrid.appendChild(productCard);
+            });
+        }
+
+        // Mostrar mensaje cuando no hay productos
+        function showNoProductsMessage() {
+            productsGrid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                    <i class="fas fa-utensils fa-4x" style="color: #63b3ff; margin-bottom: 20px; opacity: 0.7;"></i>
+                    <h3 style="color: #63b3ff; font-size: 1.8rem; margin-bottom: 15px;">¡Próximamente!</h3>
+                    <p style="color: #a0c8ff; font-size: 1.1rem; max-width: 600px; margin: 0 auto 30px; line-height: 1.6;">
+                        Estamos preparando deliciosas opciones de comida para ti. 
+                        Mientras tanto, puedes agregar productos desde el Panel de Administración.
+                    </p>
+                    <button onclick="window.location.href='home.html#admin'" style="
+                        margin-top: 20px;
+                        padding: 14px 35px;
+                        background: linear-gradient(to right, #4a90e2, #63b3ff);
+                        color: white;
+                        border: none;
+                        border-radius: 10px;
+                        cursor: pointer;
+                        font-weight: 600;
+                        font-size: 1.1rem;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 12px;
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 20px rgba(74, 144, 226, 0.3)'"
+                      onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                        <i class="fas fa-plus-circle"></i> Agregar Productos al Inventario
+                    </button>
+                </div>
+            `;
+        }
+
+        // Función para mostrar notificación
+        function showNotification(message, type = 'success') {
+            // Eliminar notificaciones anteriores
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(n => n.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remover después de 3 segundos
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Hacer funciones globales disponibles
+        window.openImageModal = function(index) {
+            if (index >= 0 && index < inventory.length) {
+                currentImageIndex = index;
+                currentProductImages = inventory.map(p => p.image || 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+                modalImage.src = currentProductImages[currentImageIndex];
+                imageModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                updateImageNavButtons();
+            }
+        };
+
+        window.updateProductQuantity = function(productId, change) {
+            const input = document.getElementById(`qty-${productId}`);
+            const product = inventory.find(p => p.id === productId);
+            
+            if (!product || !input) return;
+            
+            let newQuantity = parseInt(input.value) + change;
+            
+            // Validar límites
+            if (newQuantity < 1) newQuantity = 1;
+            if (newQuantity > product.stock) newQuantity = product.stock;
+            
+            input.value = newQuantity;
+            
+            // Actualizar botón en producto
+            const addBtn = input.closest('.product-card').querySelector('.add-to-cart-btn');
+            if (addBtn) {
+                addBtn.innerHTML = `<i class="fas fa-cart-plus"></i> ${newQuantity > 0 ? `Actualizar (${newQuantity})` : 'Agregar al Carrito'}`;
+            }
+            
+            // Mostrar/ocultar botón de compra directa
+            const directPurchaseDiv = input.closest('.product-card').querySelector('.direct-purchase');
+            if (directPurchaseDiv) {
+                if (newQuantity > 0) {
+                    directPurchaseDiv.innerHTML = `
+                        <button class="direct-purchase-btn" onclick="buyDirect('${productId}')">
+                            <i class="fab fa-whatsapp"></i> Comprar ${newQuantity} unidad${newQuantity !== 1 ? 'es' : ''} ahora
+                        </button>
+                    `;
+                } else {
+                    directPurchaseDiv.innerHTML = '';
+                }
+            }
+            
+            // Habilitar/deshabilitar botones
+            const minusBtn = input.closest('.product-card').querySelector('.qty-btn:first-child');
+            const plusBtn = input.closest('.product-card').querySelector('.qty-btn:last-child');
+            
+            if (minusBtn) minusBtn.disabled = newQuantity <= 1 || product.stock === 0;
+            if (plusBtn) plusBtn.disabled = newQuantity >= product.stock || product.stock === 0;
+            
+            // Si ya está en el carrito, actualizar automáticamente
+            const cartIndex = cart.findIndex(item => item.id === productId);
+            if (cartIndex !== -1) {
+                cart[cartIndex].quantity = newQuantity;
+                updateCartUI();
+            }
+        };
+
+        window.updateProductQuantityInput = function(productId, value) {
+            const product = inventory.find(p => p.id === productId);
+            if (!product) return;
+            
+            let newQuantity = parseInt(value) || 1;
+            
+            // Validar límites
+            if (newQuantity < 1) newQuantity = 1;
+            if (newQuantity > product.stock) newQuantity = product.stock;
+            
+            // Actualizar input
+            const input = document.getElementById(`qty-${productId}`);
+            if (input) input.value = newQuantity;
+            
+            // Actualizar botón en producto
+            const addBtn = input.closest('.product-card').querySelector('.add-to-cart-btn');
+            if (addBtn) {
+                addBtn.innerHTML = `<i class="fas fa-cart-plus"></i> ${newQuantity > 0 ? `Actualizar (${newQuantity})` : 'Agregar al Carrito'}`;
+            }
+            
+            // Mostrar/ocultar botón de compra directa
+            const directPurchaseDiv = input.closest('.product-card').querySelector('.direct-purchase');
+            if (directPurchaseDiv) {
+                if (newQuantity > 0) {
+                    directPurchaseDiv.innerHTML = `
+                        <button class="direct-purchase-btn" onclick="buyDirect('${productId}')">
+                            <i class="fab fa-whatsapp"></i> Comprar ${newQuantity} unidad${newQuantity !== 1 ? 'es' : ''} ahora
+                        </button>
+                    `;
+                } else {
+                    directPurchaseDiv.innerHTML = '';
+                }
+            }
+            
+            // Habilitar/deshabilitar botones
+            const minusBtn = input.closest('.product-card').querySelector('.qty-btn:first-child');
+            const plusBtn = input.closest('.product-card').querySelector('.qty-btn:last-child');
+            
+            if (minusBtn) minusBtn.disabled = newQuantity <= 1 || product.stock === 0;
+            if (plusBtn) plusBtn.disabled = newQuantity >= product.stock || product.stock === 0;
+            
+            // Si ya está en el carrito, actualizar automáticamente
+            const cartIndex = cart.findIndex(item => item.id === productId);
+            if (cartIndex !== -1) {
+                cart[cartIndex].quantity = newQuantity;
+                updateCartUI();
+            }
+        };
+
+        window.addToCart = function(productId) {
+            const input = document.getElementById(`qty-${productId}`);
+            const quantity = input ? parseInt(input.value) || 1 : 1;
+            
+            const product = inventory.find(p => p.id === productId);
+            
+            if (!product) {
+                showNotification('Producto no encontrado', 'error');
+                return;
+            }
+            
+            if (product.stock < quantity) {
+                showNotification(`Solo hay ${product.stock} unidades disponibles`, 'error');
+                return;
+            }
+            
+            const existingItemIndex = cart.findIndex(item => item.id === productId);
+            
+            if (existingItemIndex !== -1) {
+                cart[existingItemIndex].quantity = quantity;
+            } else {
+                cart.push({ id: productId, quantity });
+            }
+            
+            updateCartUI();
+            showNotification(`¡${product.name} ${existingItemIndex !== -1 ? 'actualizado' : 'agregado'} al carrito!`, 'success');
+        };
+
+        window.buyDirect = function(productId) {
+            const input = document.getElementById(`qty-${productId}`);
+            const quantity = input ? parseInt(input.value) || 1 : 1;
+            
+            const product = inventory.find(p => p.id === productId);
+            
+            if (!product) {
+                showNotification('Producto no encontrado', 'error');
+                return;
+            }
+            
+            if (product.stock < quantity) {
+                showNotification(`Solo hay ${product.stock} unidades disponibles`, 'error');
+                return;
+            }
+            
+            // Limpiar carrito y agregar solo este producto
+            cart = [{ id: productId, quantity }];
+            updateCartUI();
+            
+            // Abrir carrito y proceder al checkout
+            cartModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Mostrar mensaje
+            showNotification(`Preparando pedido de ${quantity} ${product.name}`, 'info');
+        };
+
+        // ... (mantén el resto de tus funciones igual pero usando Firebase Modular)
+
+        // Inicializar
+        updateCartCount();
+        
+        // Autenticación
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            
+            if (user) {
+                const initials = user.displayName 
+                    ? user.displayName.split(' ').map(n => n[0]).join('').toUpperCase()
+                    : user.email[0].toUpperCase();
+                userAvatar.textContent = initials;
+                
+                // Cargar productos cuando el usuario esté autenticado
+                loadComidaProducts();
+                updateCartUI();
+            } else {
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Cerrar sesión
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                // Cancelar suscripción antes de cerrar sesión
+                if (unsubscribeProducts) {
+                    unsubscribeProducts();
+                }
+                
+                await signOut(auth);
+                window.location.href = 'index.html';
+            } catch (error) {
+                showNotification('Error al cerrar sesión: ' + error.message, 'error');
+            }
+        });
+
+        console.log('Página de Comida inicializada con Firebase Modular');
+    </script>
+</body>
+</html>

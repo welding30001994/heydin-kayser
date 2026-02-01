@@ -6,7 +6,6 @@
     <title>Comida | Heydin-Kayser</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* TODO EL CSS SE MANTIENE IGUAL - NO CAMBIAR */
         * {
             margin: 0;
             padding: 0;
@@ -1202,49 +1201,32 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <!-- Firebase SDK MODULAR - IGUAL QUE HOME.HTML -->
-    <script type="module">
-        // Importar los módulos necesarios de Firebase
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { 
-            getAuth, 
-            onAuthStateChanged, 
-            signOut 
-        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { 
-            getFirestore,
-            collection,
-            query,
-            where,
-            orderBy,
-            onSnapshot,
-            doc,
-            updateDoc
-        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        // MISMA CONFIGURACIÓN QUE HOME.HTML
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    
+    <script>
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCpFnSLx-ZUq6j27T-w_nvsdSvUrNs688g",
-            authDomain: "heyding-kayser.firebaseapp.com",
-            projectId: "heyding-kayser", // ¡IMPORTANTE! Con "g" al final
-            storageBucket: "heyding-kayser.firebasestorage.app",
+            authDomain: "heydin-kayser.firebaseapp.com",
+            projectId: "heydin-kayser",
+            storageBucket: "heydin-kayser.firebasestorage.app",
             messagingSenderId: "231005618306",
             appId: "1:231005618306:web:b349379b513145b6e6349b",
             measurementId: "G-0F9T839VVZ"
         };
 
         // Inicializar Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
 
         // Variables globales
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let inventory = [];
+        let inventory = JSON.parse(localStorage.getItem('inventory')) || [];
         let currentUser = null;
         let currentImageIndex = 0;
         let currentProductImages = [];
-        let unsubscribeProducts = null;
 
         // Elementos del DOM
         const cartIcon = document.getElementById('cartIcon');
@@ -1274,53 +1256,39 @@
             }
         }
 
-        // Cargar productos de comida desde Firestore en tiempo real
+        // Cargar productos de comida
         function loadComidaProducts() {
-            // Cancelar suscripción anterior si existe
-            if (unsubscribeProducts) {
-                unsubscribeProducts();
-            }
+            const comidaProducts = inventory.filter(p => p.category === 'comida');
             
-            // Suscribirse a cambios en tiempo real - SOLO PRODUCTOS DE CATEGORÍA "comida"
-            const q = query(
-                collection(db, "products"),
-                where("category", "==", "comida"),
-                orderBy("name")
-            );
-            
-            unsubscribeProducts = onSnapshot(q, (snapshot) => {
-                inventory = [];
-                
-                snapshot.forEach((doc) => {
-                    const product = {
-                        id: doc.id,
-                        ...doc.data()
-                    };
-                    inventory.push(product);
-                });
-                
-                renderComidaProducts();
-                
-                // Si no hay productos, mostrar mensaje
-                if (inventory.length === 0) {
-                    showNoProductsMessage();
-                }
-            }, (error) => {
-                console.error("Error cargando productos:", error);
-                showNotification('Error de conexión con la base de datos', 'error');
-            });
-        }
-
-        // Función para renderizar productos de comida
-        function renderComidaProducts() {
             productsGrid.innerHTML = '';
             
-            if (inventory.length === 0) {
-                showNoProductsMessage();
+            if (comidaProducts.length === 0) {
+                productsGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                        <i class="fas fa-utensils fa-3x" style="color: #63b3ff; margin-bottom: 20px;"></i>
+                        <h3 style="color: #a0c8ff;">Próximamente más productos de comida</h3>
+                        <p style="color: #a0c8ff;">Estamos preparando deliciosas opciones para ti</p>
+                        <button onclick="window.location.href='home.html#admin'" style="
+                            margin-top: 20px;
+                            padding: 12px 30px;
+                            background: linear-gradient(to right, #4a90e2, #63b3ff);
+                            color: white;
+                            border: none;
+                            border-radius: 8px;
+                            cursor: pointer;
+                            font-weight: 600;
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 10px;
+                        ">
+                            <i class="fas fa-plus"></i> Agregar Productos
+                        </button>
+                    </div>
+                `;
                 return;
             }
             
-            inventory.forEach((product, index) => {
+            comidaProducts.forEach((product, index) => {
                 const isOutOfStock = product.stock === 0;
                 const isLowStock = product.stock > 0 && product.stock < 5;
                 const inCart = cart.find(item => item.id === product.id);
@@ -1330,8 +1298,7 @@
                 productCard.className = 'product-card';
                 productCard.innerHTML = `
                     <div class="product-image" onclick="openImageModal(${index})">
-                        <img src="${product.image || 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}" 
-                             alt="${product.name}"
+                        <img src="${product.image}" alt="${product.name}" 
                              onerror="this.src='https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
                         ${isOutOfStock ? '<div class="product-badge">AGOTADO</div>' : ''}
                         ${isLowStock ? '<div class="product-badge" style="background: linear-gradient(to right, #ffa502, #ff7f00);">ÚLTIMAS UNIDADES</div>' : ''}
@@ -1339,33 +1306,32 @@
                     <div class="product-info">
                         <div class="product-header">
                             <h3 class="product-title">${product.name}</h3>
-                            <div class="product-price">$${parseFloat(product.price || 0).toFixed(2)}</div>
+                            <div class="product-price">$${product.price.toFixed(2)}</div>
                         </div>
                         <div class="product-code">
                             <i class="fas fa-barcode"></i> Código: ${product.id}
                         </div>
-                        <p class="product-desc">${product.description || 'Sin descripción'}</p>
+                        <p class="product-desc">${product.description}</p>
                         <div class="product-stock">
                             <span class="stock-label">Stock disponible:</span>
                             <span class="stock-amount ${product.stock < 5 ? 'stock-low' : 'stock-ok'}">
-                                ${product.stock || 0} unidad${product.stock !== 1 ? 'es' : ''}
+                                ${product.stock} unidad${product.stock !== 1 ? 'es' : ''}
                             </span>
                         </div>
                         
-                        <!-- Controles de cantidad -->
+                        <!-- Nuevo: Controles de cantidad -->
                         <div class="product-quantity-controls">
                             <div class="quantity-label">Cantidad:</div>
                             <div class="quantity-selector">
                                 <button class="qty-btn" onclick="updateProductQuantity('${product.id}', -1)" 
-                                        ${cartQuantity <= 1 || isOutOfStock ? 'disabled' : ''}>
+                                        ${cartQuantity <= 1 ? 'disabled' : ''}>
                                     <i class="fas fa-minus"></i>
                                 </button>
                                 <input type="number" class="quantity-input" id="qty-${product.id}" 
-                                       value="${cartQuantity}" min="1" max="${product.stock || 0}" 
-                                       onchange="updateProductQuantityInput('${product.id}', this.value)"
-                                       ${isOutOfStock ? 'disabled' : ''}>
+                                       value="${cartQuantity}" min="1" max="${product.stock}" 
+                                       onchange="updateProductQuantityInput('${product.id}', this.value)">
                                 <button class="qty-btn" onclick="updateProductQuantity('${product.id}', 1)" 
-                                        ${cartQuantity >= (product.stock || 0) || isOutOfStock ? 'disabled' : ''}>
+                                        ${cartQuantity >= product.stock ? 'disabled' : ''}>
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
@@ -1393,76 +1359,65 @@
             });
         }
 
-        // Mostrar mensaje cuando no hay productos
-        function showNoProductsMessage() {
-            productsGrid.innerHTML = `
-                <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
-                    <i class="fas fa-utensils fa-4x" style="color: #63b3ff; margin-bottom: 20px; opacity: 0.7;"></i>
-                    <h3 style="color: #63b3ff; font-size: 1.8rem; margin-bottom: 15px;">¡Aún no hay productos de comida!</h3>
-                    <p style="color: #a0c8ff; font-size: 1.1rem; max-width: 600px; margin: 0 auto 30px; line-height: 1.6;">
-                        Los productos que agregues en el Panel de Administración aparecerán aquí automáticamente.
-                    </p>
-                    <button onclick="window.location.href='home.html#admin'" style="
-                        margin-top: 20px;
-                        padding: 14px 35px;
-                        background: linear-gradient(to right, #4a90e2, #63b3ff);
-                        color: white;
-                        border: none;
-                        border-radius: 10px;
-                        cursor: pointer;
-                        font-weight: 600;
-                        font-size: 1.1rem;
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 12px;
-                        transition: all 0.3s ease;
-                    " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 20px rgba(74, 144, 226, 0.3)'"
-                      onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                        <i class="fas fa-plus-circle"></i> Ir al Panel de Administración
-                    </button>
-                </div>
-            `;
-        }
-
-        // Función para mostrar notificación
-        function showNotification(message, type = 'success') {
-            // Eliminar notificaciones anteriores
-            const existingNotifications = document.querySelectorAll('.notification');
-            existingNotifications.forEach(n => n.remove());
-            
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
-                <span>${message}</span>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Remover después de 3 segundos
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                notification.style.transform = 'translateX(100%)';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 300);
-            }, 3000);
-        }
-
-        // Hacer funciones globales disponibles
+        // Abrir modal de imagen
         window.openImageModal = function(index) {
-            if (index >= 0 && index < inventory.length) {
+            const comidaProducts = inventory.filter(p => p.category === 'comida');
+            if (index >= 0 && index < comidaProducts.length) {
                 currentImageIndex = index;
-                currentProductImages = inventory.map(p => p.image || 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+                currentProductImages = comidaProducts.map(p => p.image);
                 modalImage.src = currentProductImages[currentImageIndex];
                 imageModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 updateImageNavButtons();
             }
-        };
+        }
 
+        // Actualizar botones de navegación de imágenes
+        function updateImageNavButtons() {
+            prevImageBtn.style.display = currentImageIndex > 0 ? 'flex' : 'none';
+            nextImageBtn.style.display = currentImageIndex < currentProductImages.length - 1 ? 'flex' : 'none';
+        }
+
+        // Navegar entre imágenes
+        prevImageBtn.addEventListener('click', () => {
+            if (currentImageIndex > 0) {
+                currentImageIndex--;
+                modalImage.src = currentProductImages[currentImageIndex];
+                updateImageNavButtons();
+            }
+        });
+
+        nextImageBtn.addEventListener('click', () => {
+            if (currentImageIndex < currentProductImages.length - 1) {
+                currentImageIndex++;
+                modalImage.src = currentProductImages[currentImageIndex];
+                updateImageNavButtons();
+            }
+        });
+
+        // Cerrar modal de imagen
+        closeImageModal.addEventListener('click', () => {
+            imageModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Cerrar modal al hacer clic fuera
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) {
+                imageModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Cerrar modal con ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && imageModal.classList.contains('active')) {
+                imageModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Actualizar cantidad desde botones (-1 +)
         window.updateProductQuantity = function(productId, change) {
             const input = document.getElementById(`qty-${productId}`);
             const product = inventory.find(p => p.id === productId);
@@ -1501,8 +1456,8 @@
             const minusBtn = input.closest('.product-card').querySelector('.qty-btn:first-child');
             const plusBtn = input.closest('.product-card').querySelector('.qty-btn:last-child');
             
-            if (minusBtn) minusBtn.disabled = newQuantity <= 1 || product.stock === 0;
-            if (plusBtn) plusBtn.disabled = newQuantity >= product.stock || product.stock === 0;
+            if (minusBtn) minusBtn.disabled = newQuantity <= 1;
+            if (plusBtn) plusBtn.disabled = newQuantity >= product.stock;
             
             // Si ya está en el carrito, actualizar automáticamente
             const cartIndex = cart.findIndex(item => item.id === productId);
@@ -1510,8 +1465,9 @@
                 cart[cartIndex].quantity = newQuantity;
                 updateCartUI();
             }
-        };
+        }
 
+        // Actualizar cantidad desde input
         window.updateProductQuantityInput = function(productId, value) {
             const product = inventory.find(p => p.id === productId);
             if (!product) return;
@@ -1550,8 +1506,8 @@
             const minusBtn = input.closest('.product-card').querySelector('.qty-btn:first-child');
             const plusBtn = input.closest('.product-card').querySelector('.qty-btn:last-child');
             
-            if (minusBtn) minusBtn.disabled = newQuantity <= 1 || product.stock === 0;
-            if (plusBtn) plusBtn.disabled = newQuantity >= product.stock || product.stock === 0;
+            if (minusBtn) minusBtn.disabled = newQuantity <= 1;
+            if (plusBtn) plusBtn.disabled = newQuantity >= product.stock;
             
             // Si ya está en el carrito, actualizar automáticamente
             const cartIndex = cart.findIndex(item => item.id === productId);
@@ -1559,8 +1515,9 @@
                 cart[cartIndex].quantity = newQuantity;
                 updateCartUI();
             }
-        };
+        }
 
+        // Agregar producto al carrito (actualiza cantidad seleccionada)
         window.addToCart = function(productId) {
             const input = document.getElementById(`qty-${productId}`);
             const quantity = input ? parseInt(input.value) || 1 : 1;
@@ -1587,8 +1544,9 @@
             
             updateCartUI();
             showNotification(`¡${product.name} ${existingItemIndex !== -1 ? 'actualizado' : 'agregado'} al carrito!`, 'success');
-        };
+        }
 
+        // Comprar directamente desde producto
         window.buyDirect = function(productId) {
             const input = document.getElementById(`qty-${productId}`);
             const quantity = input ? parseInt(input.value) || 1 : 1;
@@ -1615,7 +1573,7 @@
             
             // Mostrar mensaje
             showNotification(`Preparando pedido de ${quantity} ${product.name}`, 'info');
-        };
+        }
 
         // Actualizar carrito en la UI
         function updateCartUI() {
@@ -1630,7 +1588,7 @@
                     </div>
                 `;
                 updateBalanceSummary();
-                renderComidaProducts(); // Actualizar botones en productos
+                loadComidaProducts(); // Actualizar botones en productos
                 return;
             }
             
@@ -1680,7 +1638,7 @@
             updateBalanceSummary();
             updateCartCount();
             localStorage.setItem('cart', JSON.stringify(cart));
-            renderComidaProducts(); // Actualizar botones en productos
+            loadComidaProducts(); // Actualizar botones en productos
         }
 
         // Actualizar cantidad en carrito
@@ -1704,7 +1662,7 @@
             
             cart[index].quantity = newQuantity;
             updateCartUI();
-        };
+        }
 
         // Eliminar producto del carrito
         window.removeFromCart = function(index) {
@@ -1714,7 +1672,7 @@
             }
             cart.splice(index, 1);
             updateCartUI();
-        };
+        }
 
         // Actualizar resumen de balance
         function updateBalanceSummary() {
@@ -1781,8 +1739,28 @@
             checkoutBtn.disabled = false;
         }
 
+        // Mostrar notificación
+        function showNotification(message, type = 'success') {
+            document.querySelectorAll('.notification').forEach(n => n.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
         // Comprar por WhatsApp (solo cuando hay productos en carrito)
-        checkoutBtn.addEventListener('click', async () => {
+        checkoutBtn.addEventListener('click', () => {
             if (cart.length === 0) {
                 showNotification('Tu carrito está vacío', 'error');
                 return;
@@ -1839,28 +1817,24 @@
             message += `3. Costo de envío (si aplica)\n\n`;
             message += `¡Gracias! 🙏`;
             
-            // Actualizar stock en Firestore
-            try {
-                const updatePromises = cart.map(async (item) => {
-                    const productRef = doc(db, "products", item.id);
-                    const product = inventory.find(p => p.id === item.id);
-                    
-                    if (product) {
-                        const newStock = product.stock - item.quantity;
-                        if (newStock >= 0) {
-                            await updateDoc(productRef, {
-                                stock: newStock
-                            });
-                        }
+            // Reducir stock
+            cart.forEach(item => {
+                const productIndex = inventory.findIndex(p => p.id === item.id);
+                if (productIndex !== -1) {
+                    inventory[productIndex].stock -= item.quantity;
+                    if (inventory[productIndex].stock < 0) {
+                        inventory[productIndex].stock = 0;
                     }
-                });
-                
-                await Promise.all(updatePromises);
-                showNotification('Stock actualizado correctamente', 'success');
-            } catch (error) {
-                console.error('Error actualizando stock:', error);
-                showNotification('Error al actualizar stock, pero el pedido se puede procesar', 'error');
-            }
+                }
+            });
+            
+            localStorage.setItem('inventory', JSON.stringify(inventory));
+            
+            // Actualizar productos en pantalla
+            loadComidaProducts();
+            
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappURL = `https://wa.me/593997595515?text=${encodedMessage}`;
             
             const oldCart = [...cart];
             cart = [];
@@ -1869,11 +1843,14 @@
             cartModal.classList.remove('active');
             document.body.style.overflow = 'auto';
             
+            const summary = oldCart.map(item => {
+                const product = inventory.find(p => p.id === item.id);
+                return `${item.quantity}x ${product?.name || 'Producto'}`;
+            }).join('\n');
+            
             showNotification(`✅ Pedido listo para enviar!`, 'success');
             
             setTimeout(() => {
-                const encodedMessage = encodeURIComponent(message);
-                const whatsappURL = `https://wa.me/593997595515?text=${encodedMessage}`;
                 window.open(whatsappURL, '_blank');
             }, 2000);
         });
@@ -1907,7 +1884,7 @@
         });
 
         // Autenticación
-        onAuthStateChanged(auth, (user) => {
+        auth.onAuthStateChanged((user) => {
             currentUser = user;
             
             if (user) {
@@ -1915,10 +1892,6 @@
                     ? user.displayName.split(' ').map(n => n[0]).join('').toUpperCase()
                     : user.email[0].toUpperCase();
                 userAvatar.textContent = initials;
-                
-                // Cargar productos cuando el usuario esté autenticado
-                loadComidaProducts();
-                updateCartUI();
             } else {
                 window.location.href = 'index.html';
             }
@@ -1927,67 +1900,44 @@
         // Cerrar sesión
         logoutBtn.addEventListener('click', async () => {
             try {
-                // Cancelar suscripción antes de cerrar sesión
-                if (unsubscribeProducts) {
-                    unsubscribeProducts();
-                }
-                
-                await signOut(auth);
+                await auth.signOut();
                 window.location.href = 'index.html';
             } catch (error) {
                 showNotification('Error al cerrar sesión: ' + error.message, 'error');
             }
         });
 
-        // Actualizar botones de navegación de imágenes
-        function updateImageNavButtons() {
-            prevImageBtn.style.display = currentImageIndex > 0 ? 'flex' : 'none';
-            nextImageBtn.style.display = currentImageIndex < currentProductImages.length - 1 ? 'flex' : 'none';
-        }
-
-        // Navegar entre imágenes
-        prevImageBtn.addEventListener('click', () => {
-            if (currentImageIndex > 0) {
-                currentImageIndex--;
-                modalImage.src = currentProductImages[currentImageIndex];
-                updateImageNavButtons();
-            }
-        });
-
-        nextImageBtn.addEventListener('click', () => {
-            if (currentImageIndex < currentProductImages.length - 1) {
-                currentImageIndex++;
-                modalImage.src = currentProductImages[currentImageIndex];
-                updateImageNavButtons();
-            }
-        });
-
-        // Cerrar modal de imagen
-        closeImageModal.addEventListener('click', () => {
-            imageModal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        });
-
-        // Cerrar modal al hacer clic fuera
-        imageModal.addEventListener('click', (e) => {
-            if (e.target === imageModal) {
-                imageModal.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
-        });
-
-        // Cerrar modal con ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && imageModal.classList.contains('active')) {
-                imageModal.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
-        });
-
         // Inicializar
         updateCartCount();
+        updateCartUI();
+        loadComidaProducts();
 
-        console.log('Página de Comida inicializada con Firebase Firestore');
+        // Cargar inventario si está vacío
+        if (inventory.length === 0) {
+            const homeInventory = JSON.parse(localStorage.getItem('inventory')) || [
+                {
+                    id: 'COM001',
+                    name: 'Combo Gourmet Premium',
+                    category: 'comida',
+                    price: 49.99,
+                    stock: 15,
+                    description: 'Selección exclusiva de platillos gourmet preparados con ingredientes premium. Incluye entrada, plato principal y postre.',
+                    image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+                },
+                {
+                    id: 'COM002',
+                    name: 'Pizza Artesanal Familiar',
+                    category: 'comida',
+                    price: 24.99,
+                    stock: 20,
+                    description: 'Pizza de masa artesanal con ingredientes frescos. Tamaño familiar para 4-6 personas.',
+                    image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+                }
+            ];
+            inventory = homeInventory.filter(p => p.category === 'comida');
+            localStorage.setItem('inventory', JSON.stringify(inventory));
+            loadComidaProducts();
+        }
     </script>
 </body>
 </html>
