@@ -1095,7 +1095,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
     
     <script>
-        // Firebase Configuration - AQUÍ ESTÁ TU CONFIGURACIÓN CORRECTA
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCpFnSLx-ZUq6j27T-w_nvsdSvUrNs688g",
             authDomain: "heydin-kayser.firebaseapp.com",
@@ -1117,7 +1117,7 @@
         let currentUser = null;
         let editingProductId = null;
         let currentTab = 'comida';
-        let unsubscribeInventory = null;
+        let unsubscribeInventory = null; // Para desuscribirse de los cambios
 
         // Elementos del DOM
         const cartIcon = document.getElementById('cartIcon');
@@ -1137,87 +1137,47 @@
         const submitBtn = productForm.querySelector('button[type="submit"]');
         const generatedHtmlCode = document.getElementById('generatedHtmlCode');
         const htmlLoading = document.getElementById('htmlLoading');
+        const htmlCodeContainer = document.querySelector('.html-code-container');
 
         // ==============================
-        // FUNCIONES DE FIREBASE - VERSIÓN SIMPLIFICADA
+        // FUNCIONES DE FIREBASE
         // ==============================
-
-        // Función para agregar datos iniciales si la colección está vacía
-        async function initializeFirestoreIfEmpty() {
-            try {
-                const snapshot = await db.collection('products').limit(1).get();
-                if (snapshot.empty) {
-                    console.log('Firestore vacío, agregando datos iniciales...');
-                    
-                    const initialProducts = [
-                        {
-                            code: 'COM001',
-                            name: 'Combo Gourmet Premium',
-                            category: 'comida',
-                            price: 49.99,
-                            stock: 15,
-                            description: 'Selección exclusiva de platillos gourmet',
-                            image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                        },
-                        {
-                            code: 'HD2005',
-                            name: 'M107 Humidificador de aire, ambientador, color gatito',
-                            category: 'juguetes',
-                            price: 20.00,
-                            stock: 6,
-                            description: 'Este es nuestro humidificador en forma de Gatito perfecto para que todas tus noches sean relajantes',
-                            image: 'https://raw.githubusercontent.com/welding30001994/heydin-kayser/refs/heads/main/imagenes/juguete/HD2005.jpg',
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                        }
-                    ];
-                    
-                    for (const product of initialProducts) {
-                        await db.collection('products').add(product);
-                    }
-                    
-                    console.log('Datos iniciales agregados a Firestore');
-                }
-            } catch (error) {
-                console.error('Error al inicializar Firestore:', error);
-            }
-        }
 
         // Cargar inventario desde Firebase
-        function loadInventoryFromFirebase() {
-            console.log('Conectando a Firestore...');
-            
-            unsubscribeInventory = db.collection('products')
-                .orderBy('createdAt', 'desc')
-                .onSnapshot((snapshot) => {
-                    inventory = [];
-                    snapshot.forEach((doc) => {
-                        const product = doc.data();
-                        product.firebaseId = doc.id; // ID de Firestore
-                        inventory.push(product);
+        async function loadInventoryFromFirebase() {
+            try {
+                console.log('Cargando inventario desde Firebase...');
+                
+                // Escuchar cambios en tiempo real
+                unsubscribeInventory = db.collection('products')
+                    .orderBy('createdAt', 'desc')
+                    .onSnapshot((snapshot) => {
+                        inventory = [];
+                        snapshot.forEach((doc) => {
+                            const product = doc.data();
+                            product.id = doc.id; // Usar el ID de Firestore como ID del producto
+                            inventory.push(product);
+                        });
+                        
+                        console.log('Inventario cargado desde Firebase:', inventory.length, 'productos');
+                        
+                        // Actualizar la UI
+                        updateInventoryUI();
+                        updateAllHtmlCode();
+                        
+                        // Ocultar loading y mostrar tabla
+                        inventoryLoading.style.display = 'none';
+                        inventoryTable.style.display = 'table';
+                    }, (error) => {
+                        console.error('Error al cargar inventario:', error);
+                        showNotification('Error al cargar el inventario');
+                        inventoryLoading.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error al cargar inventario';
                     });
                     
-                    console.log('Productos cargados:', inventory.length);
-                    
-                    // Actualizar UI
-                    updateInventoryUI();
-                    updateAllHtmlCode();
-                    
-                    // Ocultar loading y mostrar tabla
-                    inventoryLoading.style.display = 'none';
-                    inventoryTable.style.display = 'table';
-                    
-                }, (error) => {
-                    console.error('Error Firestore:', error);
-                    inventoryLoading.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error al cargar. Recarga la página.';
-                    
-                    // Si hay error, intentar inicializar
-                    if (error.code === 'failed-precondition') {
-                        initializeFirestoreIfEmpty();
-                    }
-                });
+            } catch (error) {
+                console.error('Error en loadInventoryFromFirebase:', error);
+                showNotification('Error al conectar con la base de datos');
+            }
         }
 
         // Agregar producto a Firebase
@@ -1232,7 +1192,7 @@
                     throw new Error('Ya existe un producto con este código');
                 }
                 
-                // Agregar timestamps
+                // Agregar timestamp
                 product.createdAt = firebase.firestore.FieldValue.serverTimestamp();
                 product.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
                 
@@ -1285,6 +1245,28 @@
             } catch (error) {
                 console.error('Error al eliminar producto:', error);
                 throw error;
+            }
+        }
+
+        // Actualizar stock después de una compra
+        async function updateStockAfterPurchase(productId, quantity) {
+            try {
+                const productRef = db.collection('products').doc(productId);
+                const doc = await productRef.get();
+                
+                if (doc.exists) {
+                    const currentStock = doc.data().stock;
+                    const newStock = Math.max(0, currentStock - quantity);
+                    
+                    await productRef.update({
+                        stock: newStock,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    console.log(`Stock actualizado: ${productId} - Nuevo stock: ${newStock}`);
+                }
+            } catch (error) {
+                console.error('Error al actualizar stock:', error);
             }
         }
 
@@ -1616,29 +1598,39 @@
             const encodedMessage = encodeURIComponent(message);
             const whatsappURL = `https://wa.me/593997595515?text=${encodedMessage}`;
             
-            // Actualizar stock en Firebase
-            for (const item of cart) {
+            // Actualizar stock en Firebase para cada producto
+            const updatePromises = cart.map(item => {
                 const product = inventory.find(p => p.code === item.id);
-                if (product && product.firebaseId) {
-                    try {
-                        const newStock = Math.max(0, product.stock - item.quantity);
-                        await db.collection('products').doc(product.firebaseId).update({
-                            stock: newStock,
-                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                if (product) {
+                    // Encontrar el documento por código
+                    return db.collection('products')
+                        .where('code', '==', item.id)
+                        .get()
+                        .then(querySnapshot => {
+                            if (!querySnapshot.empty) {
+                                const doc = querySnapshot.docs[0];
+                                const currentStock = doc.data().stock;
+                                const newStock = Math.max(0, currentStock - item.quantity);
+                                return doc.ref.update({
+                                    stock: newStock,
+                                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                                });
+                            }
                         });
-                        console.log(`Stock actualizado: ${product.code} -> ${newStock}`);
-                    } catch (error) {
-                        console.error('Error al actualizar stock:', error);
-                    }
                 }
+                return Promise.resolve();
+            });
+            
+            try {
+                await Promise.all(updatePromises);
+                console.log('Stocks actualizados después de la compra');
+            } catch (error) {
+                console.error('Error al actualizar stocks:', error);
             }
             
-            // Limpiar carrito
             cart = [];
             updateCartUI();
-            localStorage.setItem('cart', JSON.stringify(cart));
             
-            // Abrir WhatsApp
             window.open(whatsappURL, '_blank');
             cartModal.classList.remove('active');
             
@@ -1712,7 +1704,7 @@
                     </td>
                     <td>${product.stock < 5 ? 'Bajo Stock' : 'Disponible'}</td>
                     <td>
-                        <button onclick="editProduct('${product.firebaseId}', '${product.code}')" style="
+                        <button onclick="editProduct('${product.id}', '${product.code}')" style="
                             background: rgba(74, 144, 226, 0.2);
                             border: 1px solid rgba(74, 144, 226, 0.3);
                             color: #63b3ff;
@@ -1723,7 +1715,7 @@
                         ">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button onclick="deleteProduct('${product.firebaseId}', '${product.code}')" style="
+                        <button onclick="deleteProduct('${product.id}', '${product.code}')" style="
                             background: rgba(244, 67, 54, 0.2);
                             border: 1px solid rgba(244, 67, 54, 0.3);
                             color: #ef9a9a;
