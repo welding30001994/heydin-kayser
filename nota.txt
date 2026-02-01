@@ -19,3 +19,9 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+
+
+cd heydin-kayser
+git add .
+git commit -m "primer commit"
+git push -u
