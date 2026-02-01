@@ -734,6 +734,26 @@
             animation: spin 1s linear infinite;
         }
 
+        .error-message {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            color: #ef9a9a;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .success-message {
+            background: rgba(37, 211, 102, 0.2);
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            color: #25D366;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -890,7 +910,11 @@
     <section class="admin-panel" id="admin">
         <h2 class="admin-title">Panel de Administración</h2>
         
-        <form class="admin-form" id="productForm">
+        <div id="firebaseStatus" class="loading">
+            <i class="fas fa-spinner"></i> Conectando a Firebase...
+        </div>
+        
+        <form class="admin-form" id="productForm" style="display: none;">
             <div class="form-group">
                 <label for="productCategory">Categoría:</label>
                 <select id="productCategory" required>
@@ -943,7 +967,7 @@
         
         <h3 style="color: #63b3ff; margin: 30px 0 20px;">Inventario Actual</h3>
         <div id="inventoryLoading" class="loading">
-            <i class="fas fa-spinner"></i> Cargando inventario...
+            <i class="fas fa-spinner"></i> Cargando inventario desde Firebase...
         </div>
         <table class="inventory-table" id="inventoryTable" style="display: none;">
             <thead>
@@ -981,7 +1005,7 @@
         
         <div class="html-code-container">
             <div id="htmlLoading" class="loading">
-                <i class="fas fa-spinner"></i> Generando código HTML...
+                <i class="fas fa-spinner"></i> Esperando datos de Firebase...
             </div>
             <pre class="html-code" id="generatedHtmlCode" style="display: none;">
 <!-- El código HTML generado aparecerá aquí -->
@@ -1095,891 +1119,498 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
     
     <script>
-        // Firebase Configuration - AQUÍ ESTÁ TU CONFIGURACIÓN CORRECTA
-        const firebaseConfig = {
-            apiKey: "AIzaSyCpFnSLx-ZUq6j27T-w_nvsdSvUrNs688g",
-            authDomain: "heydin-kayser.firebaseapp.com",
-            projectId: "heydin-kayser",
-            storageBucket: "heydin-kayser.firebasestorage.app",
-            messagingSenderId: "231005618306",
-            appId: "1:231005618306:web:b349379b513145b6e6349b",
-            measurementId: "G-0F9T839VVZ"
+      // ==============================
+// CONFIGURACIÓN FIREBASE
+// ==============================
+const firebaseConfig = {
+    apiKey: "AIzaSyCpFnSLx-ZUq6j27T-w_nvsdSvUrNs688g",
+    authDomain: "heydin-kayser.firebaseapp.com",
+    projectId: "heydin-kayser",
+    storageBucket: "heydin-kayser.firebasestorage.app",
+    messagingSenderId: "231005618306",
+    appId: "1:231005618306:web:b349379b513145b6e6349b",
+    measurementId: "G-0F9T839VVZ"
+};
+
+// ==============================
+// INICIALIZAR FIREBASE (UNA SOLA VEZ)
+// ==============================
+let app;
+let auth;
+let db;
+
+try {
+    app = firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    db = firebase.firestore();
+    console.log('✅ Firebase inicializado correctamente');
+    
+    // Actualizar estado en la UI
+    const firebaseStatus = document.getElementById('firebaseStatus');
+    if (firebaseStatus) {
+        firebaseStatus.innerHTML = '<div class="success-message"><i class="fas fa-check-circle"></i> Conectado a Firebase correctamente</div>';
+    }
+    
+} catch (error) {
+    console.error('❌ Error al inicializar Firebase:', error);
+    const firebaseStatus = document.getElementById('firebaseStatus');
+    if (firebaseStatus) {
+        firebaseStatus.innerHTML = '<div class="error-message"><i class="fas fa-exclamation-triangle"></i> Error al conectar con Firebase: ' + error.message + '</div>';
+    }
+}
+
+// ==============================
+// VARIABLES GLOBALES
+// ==============================
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let inventory = [];
+let currentUser = null;
+let editingProductId = null;
+let currentTab = 'comida';
+let unsubscribeInventory = null;
+
+// ==============================
+// FUNCIONES PARA FIREBASE
+// ==============================
+
+// 1. AGREGAR PRODUCTO A FIREBASE
+async function addProductToFirebase(productData) {
+    try {
+        console.log('➕ Intentando agregar producto a Firebase...', productData);
+        
+        // Verificar si el código ya existe
+        const querySnapshot = await db.collection('products')
+            .where('code', '==', productData.code)
+            .get();
+        
+        if (!querySnapshot.empty) {
+            throw new Error('❌ Ya existe un producto con el código: ' + productData.code);
+        }
+        
+        // Agregar timestamps
+        productData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+        productData.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+        
+        // AGREGAR A FIRESTORE
+        const docRef = await db.collection('products').add(productData);
+        
+        console.log('✅ PRODUCTO AGREGADO EXITOSAMENTE');
+        console.log('📋 ID del documento:', docRef.id);
+        console.log('📦 Datos guardados:', productData);
+        
+        return {
+            success: true,
+            message: '✅ Producto agregado correctamente a Firebase',
+            docId: docRef.id
         };
+        
+    } catch (error) {
+        console.error('❌ ERROR al agregar producto:', error);
+        throw error; // Relanzar el error para manejarlo en el formulario
+    }
+}
 
-        // Inicializar Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-
-        // Variables globales
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let inventory = []; // Ahora se carga desde Firebase
-        let currentUser = null;
-        let editingProductId = null;
-        let currentTab = 'comida';
-        let unsubscribeInventory = null;
-
-        // Elementos del DOM
-        const cartIcon = document.getElementById('cartIcon');
-        const cartCount = document.getElementById('cartCount');
-        const cartModal = document.getElementById('cartModal');
-        const closeCart = document.getElementById('closeCart');
-        const cartItems = document.getElementById('cartItems');
-        const cartTotal = document.getElementById('cartTotal');
-        const checkoutBtn = document.getElementById('checkoutBtn');
-        const userAvatar = document.getElementById('userAvatar');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const productForm = document.getElementById('productForm');
-        const cancelEditBtn = document.getElementById('cancelEditBtn');
-        const inventoryBody = document.getElementById('inventoryTable').querySelector('tbody');
-        const inventoryLoading = document.getElementById('inventoryLoading');
-        const inventoryTable = document.getElementById('inventoryTable');
-        const submitBtn = productForm.querySelector('button[type="submit"]');
-        const generatedHtmlCode = document.getElementById('generatedHtmlCode');
-        const htmlLoading = document.getElementById('htmlLoading');
-
-        // ==============================
-        // FUNCIONES DE FIREBASE - VERSIÓN SIMPLIFICADA
-        // ==============================
-
-        // Función para agregar datos iniciales si la colección está vacía
-        async function initializeFirestoreIfEmpty() {
-            try {
-                const snapshot = await db.collection('products').limit(1).get();
-                if (snapshot.empty) {
-                    console.log('Firestore vacío, agregando datos iniciales...');
-                    
-                    const initialProducts = [
-                        {
-                            code: 'COM001',
-                            name: 'Combo Gourmet Premium',
-                            category: 'comida',
-                            price: 49.99,
-                            stock: 15,
-                            description: 'Selección exclusiva de platillos gourmet',
-                            image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                        },
-                        {
-                            code: 'HD2005',
-                            name: 'M107 Humidificador de aire, ambientador, color gatito',
-                            category: 'juguetes',
-                            price: 20.00,
-                            stock: 6,
-                            description: 'Este es nuestro humidificador en forma de Gatito perfecto para que todas tus noches sean relajantes',
-                            image: 'https://raw.githubusercontent.com/welding30001994/heydin-kayser/refs/heads/main/imagenes/juguete/HD2005.jpg',
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                        }
-                    ];
-                    
-                    for (const product of initialProducts) {
-                        await db.collection('products').add(product);
-                    }
-                    
-                    console.log('Datos iniciales agregados a Firestore');
-                }
-            } catch (error) {
-                console.error('Error al inicializar Firestore:', error);
-            }
+// 2. CARGAR PRODUCTOS DESDE FIREBASE EN TIEMPO REAL
+function loadProductsFromFirebase() {
+    console.log('🔄 Cargando productos desde Firebase...');
+    
+    try {
+        // Desuscribirse de la suscripción anterior si existe
+        if (unsubscribeInventory) {
+            unsubscribeInventory();
         }
-
-        // Cargar inventario desde Firebase
-        function loadInventoryFromFirebase() {
-            console.log('Conectando a Firestore...');
-            
-            unsubscribeInventory = db.collection('products')
-                .orderBy('createdAt', 'desc')
-                .onSnapshot((snapshot) => {
-                    inventory = [];
-                    snapshot.forEach((doc) => {
-                        const product = doc.data();
-                        product.firebaseId = doc.id; // ID de Firestore
-                        inventory.push(product);
-                    });
-                    
-                    console.log('Productos cargados:', inventory.length);
-                    
-                    // Actualizar UI
-                    updateInventoryUI();
-                    updateAllHtmlCode();
-                    
-                    // Ocultar loading y mostrar tabla
-                    inventoryLoading.style.display = 'none';
-                    inventoryTable.style.display = 'table';
-                    
-                }, (error) => {
-                    console.error('Error Firestore:', error);
-                    inventoryLoading.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error al cargar. Recarga la página.';
-                    
-                    // Si hay error, intentar inicializar
-                    if (error.code === 'failed-precondition') {
-                        initializeFirestoreIfEmpty();
-                    }
-                });
-        }
-
-        // Agregar producto a Firebase
-        async function addProductToFirebase(product) {
-            try {
-                // Verificar si el código ya existe
-                const querySnapshot = await db.collection('products')
-                    .where('code', '==', product.code)
-                    .get();
-                
-                if (!querySnapshot.empty) {
-                    throw new Error('Ya existe un producto con este código');
-                }
-                
-                // Agregar timestamps
-                product.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                product.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
-                
-                // Agregar a Firestore
-                const docRef = await db.collection('products').add(product);
-                console.log('Producto agregado con ID:', docRef.id);
-                
-                return docRef.id;
-            } catch (error) {
-                console.error('Error al agregar producto:', error);
-                throw error;
-            }
-        }
-
-        // Actualizar producto en Firebase
-        async function updateProductInFirebase(productId, productData) {
-            try {
-                // Verificar si el nuevo código ya existe (excepto para el mismo producto)
-                if (editingProductId !== productId) {
-                    const querySnapshot = await db.collection('products')
-                        .where('code', '==', productData.code)
-                        .where(firebase.firestore.FieldPath.documentId(), '!=', productId)
-                        .get();
-                    
-                    if (!querySnapshot.empty) {
-                        throw new Error('Ya existe otro producto con este código');
-                    }
-                }
-                
-                // Actualizar timestamp
-                productData.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
-                
-                // Actualizar en Firestore
-                await db.collection('products').doc(productId).update(productData);
-                console.log('Producto actualizado:', productId);
-                
-                return true;
-            } catch (error) {
-                console.error('Error al actualizar producto:', error);
-                throw error;
-            }
-        }
-
-        // Eliminar producto de Firebase
-        async function deleteProductFromFirebase(productId) {
-            try {
-                await db.collection('products').doc(productId).delete();
-                console.log('Producto eliminado:', productId);
-                return true;
-            } catch (error) {
-                console.error('Error al eliminar producto:', error);
-                throw error;
-            }
-        }
-
-        // ==============================
-        // FUNCIONES DE CÓDIGO HTML
-        // ==============================
-
-        function showHtmlCode(category) {
-            currentTab = category;
-            
-            // Actualizar pestañas activas
-            document.querySelectorAll('.code-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Generar y mostrar el código correspondiente
-            if (category === 'todos') {
-                generateAllProductsHtml();
-            } else {
-                generateCategoryHtml(category);
-            }
-        }
-
-        function generateAllProductsHtml() {
-            if (inventory.length === 0) {
-                generatedHtmlCode.textContent = '<!-- No hay productos en el inventario -->\n<div class="products-grid">\n    <p style="color: #a0c8ff; text-align: center; width: 100%;">No hay productos disponibles. Agrega productos desde el panel de administración.</p>\n</div>';
-                htmlLoading.style.display = 'none';
-                generatedHtmlCode.style.display = 'block';
-                return;
-            }
-            
-            let htmlCode = `<!-- ========================================== -->\n`;
-            htmlCode += `<!-- TODOS LOS PRODUCTOS - Heydin-Kayser -->\n`;
-            htmlCode += `<!-- Generado automáticamente el ${new Date().toLocaleDateString()} -->\n`;
-            htmlCode += `<!-- Total: ${inventory.length} productos -->\n`;
-            htmlCode += `<!-- ========================================== -->\n\n`;
-            htmlCode += `<div class="products-grid">\n\n`;
-            
-            inventory.forEach(product => {
-                htmlCode += generateProductCardHtml(product);
-            });
-            
-            htmlCode += `</div>`;
-            
-            generatedHtmlCode.textContent = htmlCode;
-            htmlLoading.style.display = 'none';
-            generatedHtmlCode.style.display = 'block';
-        }
-
-        function generateCategoryHtml(category) {
-            const categoryName = getCategoryName(category);
-            const categoryProducts = inventory.filter(p => p.category === category);
-            
-            let htmlCode = `<!-- ========================================== -->\n`;
-            htmlCode += `<!-- PRODUCTOS DE ${categoryName.toUpperCase()} - Heydin-Kayser -->\n`;
-            htmlCode += `<!-- Generado automáticamente el ${new Date().toLocaleDateString()} -->\n`;
-            htmlCode += `<!-- Total: ${categoryProducts.length} productos -->\n`;
-            htmlCode += `<!-- ========================================== -->\n\n`;
-            
-            if (categoryProducts.length === 0) {
-                htmlCode += `<div class="products-grid">\n`;
-                htmlCode += `    <div style="text-align: center; width: 100%; padding: 40px;">\n`;
-                htmlCode += `        <i class="fas fa-box-open" style="font-size: 3rem; color: #4a90e2; margin-bottom: 20px;"></i>\n`;
-                htmlCode += `        <h3 style="color: #a0c8ff;">No hay productos en esta categoría</h3>\n`;
-                htmlCode += `        <p style="color: #a0c8ff;">Agrega productos desde el panel de administración.</p>\n`;
-                htmlCode += `    </div>\n`;
-                htmlCode += `</div>`;
-            } else {
-                htmlCode += `<div class="products-grid">\n\n`;
-                
-                categoryProducts.forEach(product => {
-                    htmlCode += generateProductCardHtml(product);
+        
+        // ESCUCHAR CAMBIOS EN TIEMPO REAL
+        unsubscribeInventory = db.collection('products')
+            .orderBy('createdAt', 'desc')
+            .onSnapshot((snapshot) => {
+                inventory = [];
+                snapshot.forEach((doc) => {
+                    const product = doc.data();
+                    product.id = doc.id; // ID de Firebase
+                    inventory.push(product);
+                    console.log('📥 Producto cargado:', product.name);
                 });
                 
-                htmlCode += `</div>`;
-            }
-            
-            generatedHtmlCode.textContent = htmlCode;
-            htmlLoading.style.display = 'none';
-            generatedHtmlCode.style.display = 'block';
-        }
-
-        function generateProductCardHtml(product) {
-            const stockClass = product.stock < 5 ? 'stock-low' : 'stock-ok';
-            
-            let html = `    <!-- ${product.name} -->\n`;
-            html += `    <div class="product-card">\n`;
-            html += `        <div class="product-image">\n`;
-            html += `            <img src="${product.image || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}" alt="${product.name}" loading="lazy">\n`;
-            html += `        </div>\n`;
-            html += `        <div class="product-info">\n`;
-            html += `            <div class="product-header">\n`;
-            html += `                <h3 class="product-title">${product.name}</h3>\n`;
-            html += `                <div class="product-price">$${parseFloat(product.price).toFixed(2)}</div>\n`;
-            html += `            </div>\n`;
-            html += `            <div class="product-code">\n`;
-            html += `                <i class="fas fa-barcode"></i> Código: <strong>${product.code}</strong>\n`;
-            html += `            </div>\n`;
-            html += `            <p class="product-desc">${product.description}</p>\n`;
-            html += `            <div class="product-stock">\n`;
-            html += `                <span class="stock-label">Stock:</span>\n`;
-            html += `                <span class="stock-amount ${stockClass}">${product.stock} unidades</span>\n`;
-            html += `            </div>\n`;
-            html += `            <div class="product-actions">\n`;
-            html += `                <button class="add-to-cart-btn" onclick="addToCart('${product.code}')">\n`;
-            html += `                    <i class="fas fa-cart-plus"></i> Agregar al Carrito\n`;
-            html += `                </button>\n`;
-            html += `                <button class="buy-now-btn" onclick="buyNow('${product.code}')">\n`;
-            html += `                    <i class="fab fa-whatsapp"></i> Comprar Ahora\n`;
-            html += `                </button>\n`;
-            html += `            </div>\n`;
-            html += `        </div>\n`;
-            html += `    </div>\n\n`;
-            
-            return html;
-        }
-
-        function copyHtmlCode() {
-            const textarea = document.createElement('textarea');
-            textarea.value = generatedHtmlCode.textContent;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            
-            showNotification('¡Código HTML copiado al portapapeles!');
-        }
-
-        function updateAllHtmlCode() {
-            if (currentTab === 'todos') {
-                generateAllProductsHtml();
-            } else {
-                generateCategoryHtml(currentTab);
-            }
-        }
-
-        // ==============================
-        // FUNCIONES DEL CARRITO
-        // ==============================
-
-        function updateCartCount() {
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartCount.textContent = totalItems;
-        }
-
-        function updateCartUI() {
-            cartItems.innerHTML = '';
-            
-            if (cart.length === 0) {
-                cartItems.innerHTML = '<div class="empty-cart"><i class="fas fa-shopping-cart fa-3x"></i><p>Tu carrito está vacío</p></div>';
-                cartTotal.textContent = '$0.00';
-                return;
-            }
-            
-            let total = 0;
-            
-            cart.forEach((item, index) => {
-                const product = inventory.find(p => p.code === item.id);
-                if (!product) return;
+                console.log('✅ Total productos cargados:', inventory.length);
                 
-                const itemTotal = parseFloat(product.price) * item.quantity;
-                total += itemTotal;
+                // ACTUALIZAR LA TABLA EN PANTALLA
+                updateInventoryTable();
                 
-                const cartItem = document.createElement('div');
-                cartItem.className = 'cart-item';
-                cartItem.innerHTML = `
-                    <div class="cart-item-header">
-                        <div class="cart-item-name">${product.name}</div>
-                        <div class="cart-item-price">$${itemTotal.toFixed(2)}</div>
-                    </div>
-                    <div style="color: #a0c8ff; font-size: 0.9rem; margin-bottom: 8px;">
-                        <i class="fas fa-barcode"></i> ${product.code}
-                    </div>
-                    <div class="cart-item-controls">
-                        <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">-</button>
-                        <span class="cart-item-quantity">${item.quantity}</span>
-                        <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
-                        <button class="remove-item" onclick="removeFromCart(${index})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                cartItems.appendChild(cartItem);
-            });
-            
-            cartTotal.textContent = `$${total.toFixed(2)}`;
-            updateCartCount();
-            localStorage.setItem('cart', JSON.stringify(cart));
-        }
-
-        window.updateQuantity = function(index, change) {
-            const item = cart[index];
-            const product = inventory.find(p => p.code === item.id);
-            
-            if (!product) return;
-            
-            const newQuantity = item.quantity + change;
-            
-            if (newQuantity < 1) {
-                removeFromCart(index);
-                return;
-            }
-            
-            if (newQuantity > product.stock) {
-                alert(`Solo hay ${product.stock} unidades disponibles en stock`);
-                return;
-            }
-            
-            cart[index].quantity = newQuantity;
-            updateCartUI();
-        }
-
-        window.removeFromCart = function(index) {
-            cart.splice(index, 1);
-            updateCartUI();
-        }
-
-        window.addToCart = function(productCode, quantity = 1) {
-            const product = inventory.find(p => p.code === productCode);
-            
-            if (!product) {
-                alert('Producto no encontrado');
-                return;
-            }
-            
-            if (product.stock < quantity) {
-                alert(`Solo hay ${product.stock} unidades disponibles en stock`);
-                return;
-            }
-            
-            const existingItem = cart.find(item => item.id === productCode);
-            
-            if (existingItem) {
-                const newQuantity = existingItem.quantity + quantity;
-                if (newQuantity > product.stock) {
-                    alert(`Solo puedes agregar ${product.stock - existingItem.quantity} unidades más`);
-                    return;
-                }
-                existingItem.quantity = newQuantity;
-            } else {
-                cart.push({ id: productCode, quantity });
-            }
-            
-            updateCartUI();
-            showNotification(`¡${product.name} agregado al carrito!`);
-        }
-
-        window.buyNow = function(productCode) {
-            const product = inventory.find(p => p.code === productCode);
-            
-            if (!product) {
-                alert('Producto no encontrado');
-                return;
-            }
-            
-            if (product.stock < 1) {
-                alert('Este producto está agotado');
-                return;
-            }
-            
-            cart = [{ id: productCode, quantity: 1 }];
-            updateCartUI();
-            cartModal.classList.add('active');
-            
-            setTimeout(() => {
-                cartModal.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-        }
-
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: #25D366;
-                color: white;
-                padding: 15px 25px;
-                border-radius: 10px;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-                z-index: 3000;
-                animation: fadeIn 0.3s ease-out;
-            `;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        }
-
-        cartIcon.addEventListener('click', () => {
-            cartModal.classList.add('active');
-            updateCartUI();
-        });
-
-        closeCart.addEventListener('click', () => {
-            cartModal.classList.remove('active');
-        });
-
-        checkoutBtn.addEventListener('click', async () => {
-            if (cart.length === 0) {
-                alert('Tu carrito está vacío');
-                return;
-            }
-            
-            let message = `¡Hola! Quiero hacer un pedido en Heydin-Kayser:\n\n`;
-            let total = 0;
-            
-            cart.forEach(item => {
-                const product = inventory.find(p => p.code === item.id);
-                if (product) {
-                    const itemTotal = parseFloat(product.price) * item.quantity;
-                    total += itemTotal;
-                    message += `- ${product.name} (Código: ${product.code})\n`;
-                    message += `  Cantidad: ${item.quantity}\n`;
-                    message += `  Precio: $${parseFloat(product.price).toFixed(2)}\n`;
-                    message += `  Subtotal: $${itemTotal.toFixed(2)}\n\n`;
+                // ACTUALIZAR CÓDIGO HTML GENERADO
+                updateHtmlCode();
+                
+                // OCULTAR LOADING
+                const inventoryLoading = document.getElementById('inventoryLoading');
+                const inventoryTable = document.getElementById('inventoryTable');
+                if (inventoryLoading) inventoryLoading.style.display = 'none';
+                if (inventoryTable) inventoryTable.style.display = 'table';
+                
+            }, (error) => {
+                console.error('❌ Error al cargar productos:', error);
+                const inventoryLoading = document.getElementById('inventoryLoading');
+                if (inventoryLoading) {
+                    inventoryLoading.innerHTML = 
+                        '<div style="color: #ff6b6b; text-align: center; padding: 20px;">' +
+                        '<i class="fas fa-exclamation-triangle"></i> Error al cargar productos<br>' +
+                        error.message + '</div>';
                 }
             });
             
-            message += `💰 *TOTAL: $${total.toFixed(2)}*\n\n`;
-            message += `📧 Cliente: ${currentUser?.displayName || currentUser?.email || 'No identificado'}\n`;
-            message += `📞 Teléfono: [Por favor ingresa tu número]\n`;
-            message += `📍 Dirección: [Por favor ingresa tu dirección]\n\n`;
-            message += `¿Podrían confirmarme la disponibilidad y el tiempo de entrega?`;
+    } catch (error) {
+        console.error('❌ Error al suscribirse:', error);
+    }
+}
+
+// 3. ACTUALIZAR PRODUCTO EN FIREBASE
+async function updateProductInFirebase(productId, productData) {
+    try {
+        console.log('✏️ Actualizando producto:', productId);
+        
+        // Verificar si el nuevo código ya existe (excepto para el mismo producto)
+        if (productData.code) {
+            const querySnapshot = await db.collection('products')
+                .where('code', '==', productData.code)
+                .where(firebase.firestore.FieldPath.documentId(), '!=', productId)
+                .get();
             
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappURL = `https://wa.me/593997595515?text=${encodedMessage}`;
-            
-            // Actualizar stock en Firebase
-            for (const item of cart) {
-                const product = inventory.find(p => p.code === item.id);
-                if (product && product.firebaseId) {
-                    try {
-                        const newStock = Math.max(0, product.stock - item.quantity);
-                        await db.collection('products').doc(product.firebaseId).update({
-                            stock: newStock,
-                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                        console.log(`Stock actualizado: ${product.code} -> ${newStock}`);
-                    } catch (error) {
-                        console.error('Error al actualizar stock:', error);
-                    }
-                }
+            if (!querySnapshot.empty) {
+                throw new Error('❌ Ya existe otro producto con el código: ' + productData.code);
             }
-            
-            // Limpiar carrito
-            cart = [];
-            updateCartUI();
-            localStorage.setItem('cart', JSON.stringify(cart));
-            
-            // Abrir WhatsApp
-            window.open(whatsappURL, '_blank');
-            cartModal.classList.remove('active');
-            
-            showNotification('¡Pedido enviado por WhatsApp!');
-        });
+        }
+        
+        // Actualizar timestamp
+        productData.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+        
+        // Actualizar en Firestore
+        await db.collection('products').doc(productId).update(productData);
+        console.log('✅ Producto actualizado:', productId);
+        
+        return true;
+        
+    } catch (error) {
+        console.error('❌ Error al actualizar producto:', error);
+        throw error;
+    }
+}
 
-        // ==============================
-        // FUNCIONES DEL INVENTARIO
-        // ==============================
+// 4. ELIMINAR PRODUCTO DE FIREBASE
+async function deleteProductFromFirebase(productId) {
+    try {
+        console.log('🗑️ Eliminando producto:', productId);
+        
+        await db.collection('products').doc(productId).delete();
+        console.log('✅ Producto eliminado:', productId);
+        
+        return true;
+        
+    } catch (error) {
+        console.error('❌ Error al eliminar producto:', error);
+        throw error;
+    }
+}
 
+// ==============================
+// MANEJAR EL FORMULARIO DE PRODUCTO
+// ==============================
+document.addEventListener('DOMContentLoaded', function() {
+    const productForm = document.getElementById('productForm');
+    
+    if (productForm) {
         productForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const category = document.getElementById('productCategory').value;
-            const name = document.getElementById('productName').value;
-            const code = document.getElementById('productCode').value;
-            const price = parseFloat(document.getElementById('productPrice').value);
-            const stock = parseInt(document.getElementById('productStock').value);
-            const description = document.getElementById('productDescription').value;
-            const image = document.getElementById('productImage').value || '';
-            
+            // OBTENER DATOS DEL FORMULARIO
             const productData = {
-                name,
-                code,
-                category,
-                price,
-                stock,
-                description,
-                image
+                category: document.getElementById('productCategory').value,
+                name: document.getElementById('productName').value,
+                code: document.getElementById('productCode').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                stock: parseInt(document.getElementById('productStock').value),
+                description: document.getElementById('productDescription').value,
+                image: document.getElementById('productImage').value || ''
             };
             
-            try {
-                if (editingProductId) {
-                    // Actualizar producto existente
-                    await updateProductInFirebase(editingProductId, productData);
-                    showNotification(`¡Producto "${name}" actualizado correctamente!`);
-                    cancelEditMode();
-                } else {
-                    // Agregar nuevo producto
-                    await addProductToFirebase(productData);
-                    showNotification(`¡Producto "${name}" agregado al inventario!`);
-                    productForm.reset();
-                }
-            } catch (error) {
-                alert(error.message || 'Error al guardar el producto');
-            }
-        });
-
-        cancelEditBtn.addEventListener('click', cancelEditMode);
-
-        function cancelEditMode() {
-            editingProductId = null;
-            productForm.reset();
-            submitBtn.innerHTML = '<i class="fas fa-plus"></i> Agregar Producto al Inventario';
-            submitBtn.className = 'hero-btn btn-primary';
-            cancelEditBtn.style.display = 'none';
-        }
-
-        function updateInventoryUI() {
-            inventoryBody.innerHTML = '';
+            console.log('📝 Datos del formulario:', productData);
             
-            inventory.forEach(product => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><strong>${product.code}</strong></td>
-                    <td>${product.name}</td>
-                    <td>${getCategoryName(product.category)}</td>
-                    <td>$${parseFloat(product.price).toFixed(2)}</td>
-                    <td class="${product.stock < 5 ? 'stock-low' : 'stock-ok'}">
-                        ${product.stock} unidades
-                    </td>
-                    <td>${product.stock < 5 ? 'Bajo Stock' : 'Disponible'}</td>
-                    <td>
-                        <button onclick="editProduct('${product.firebaseId}', '${product.code}')" style="
-                            background: rgba(74, 144, 226, 0.2);
-                            border: 1px solid rgba(74, 144, 226, 0.3);
-                            color: #63b3ff;
-                            padding: 5px 10px;
-                            border-radius: 5px;
-                            cursor: pointer;
-                            margin-right: 5px;
-                        ">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button onclick="deleteProduct('${product.firebaseId}', '${product.code}')" style="
-                            background: rgba(244, 67, 54, 0.2);
-                            border: 1px solid rgba(244, 67, 54, 0.3);
-                            color: #ef9a9a;
-                            padding: 5px 10px;
-                            border-radius: 5px;
-                            cursor: pointer;
-                        ">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-                inventoryBody.appendChild(row);
-            });
-        }
-
-        function getCategoryName(category) {
-            const categories = {
-                'comida': 'Comida',
-                'muebles': 'Muebles',
-                'juguetes': 'Juguetes',
-                'bisuteria': 'Bisutería'
-            };
-            return categories[category] || category;
-        }
-
-        window.editProduct = async function(productId, productCode) {
-            try {
-                const doc = await db.collection('products').doc(productId).get();
-                if (doc.exists) {
-                    const product = doc.data();
-                    
-                    document.getElementById('productCategory').value = product.category;
-                    document.getElementById('productName').value = product.name;
-                    document.getElementById('productCode').value = product.code;
-                    document.getElementById('productPrice').value = product.price;
-                    document.getElementById('productStock').value = product.stock;
-                    document.getElementById('productDescription').value = product.description;
-                    document.getElementById('productImage').value = product.image || '';
-                    
-                    editingProductId = productId;
-                    submitBtn.innerHTML = '<i class="fas fa-save"></i> Guardar Cambios';
-                    submitBtn.className = 'hero-btn btn-primary';
-                    cancelEditBtn.style.display = 'flex';
-                    
-                    document.getElementById('admin').scrollIntoView({ behavior: 'smooth' });
-                    
-                    showNotification(`Editando producto: ${product.name}`);
-                }
-            } catch (error) {
-                console.error('Error al cargar producto para editar:', error);
-                alert('Error al cargar el producto');
-            }
-        }
-
-        window.deleteProduct = async function(productId, productCode) {
-            if (!confirm(`¿Estás seguro de eliminar el producto con código ${productCode}?`)) {
+            // VALIDACIONES BÁSICAS
+            if (!productData.code || !productData.name || !productData.price || productData.price <= 0) {
+                alert('❌ Por favor completa todos los campos requeridos (código, nombre, precio)');
                 return;
             }
             
+            // MOSTRAR LOADING
+            const submitBtn = productForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+            submitBtn.disabled = true;
+            
             try {
-                await deleteProductFromFirebase(productId);
-                showNotification(`Producto eliminado correctamente`);
+                let result;
                 
-                if (editingProductId === productId) {
+                if (editingProductId) {
+                    // ACTUALIZAR PRODUCTO EXISTENTE
+                    result = await updateProductInFirebase(editingProductId, productData);
+                    showNotification(`✅ Producto "${productData.name}" actualizado correctamente`);
                     cancelEditMode();
+                } else {
+                    // AGREGAR NUEVO PRODUCTO
+                    result = await addProductToFirebase(productData);
+                    showNotification(`✅ Producto "${productData.name}" agregado correctamente`);
+                    productForm.reset();
                 }
+                
+                // Los productos se actualizarán automáticamente gracias a la suscripción en tiempo real
+                
             } catch (error) {
-                console.error('Error al eliminar producto:', error);
-                alert('Error al eliminar el producto');
+                console.error('❌ Error en el formulario:', error);
+                alert('❌ Error: ' + error.message);
+            } finally {
+                // RESTAURAR BOTÓN
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
             }
+        });
+    }
+});
+
+// ==============================
+// ACTUALIZAR TABLA DE INVENTARIO
+// ==============================
+function updateInventoryTable() {
+    const tbody = document.querySelector('#inventoryTable tbody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = '';
+    
+    inventory.forEach(product => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><strong>${product.code || 'N/A'}</strong></td>
+            <td>${product.name || 'Sin nombre'}</td>
+            <td>${product.category || 'Sin categoría'}</td>
+            <td>$${product.price ? product.price.toFixed(2) : '0.00'}</td>
+            <td class="${product.stock < 5 ? 'stock-low' : 'stock-ok'}">
+                ${product.stock || 0} unidades
+            </td>
+            <td>${product.stock < 5 ? 'Bajo Stock' : 'Disponible'}</td>
+            <td>
+                <button onclick="editProduct('${product.id}')" class="edit-btn">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button onclick="deleteProduct('${product.id}')" class="delete-btn">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// ==============================
+// FUNCIONES DE EDITAR Y ELIMINAR
+// ==============================
+window.editProduct = async function(productId) {
+    try {
+        const doc = await db.collection('products').doc(productId).get();
+        if (doc.exists) {
+            const product = doc.data();
+            
+            // RELLENAR FORMULARIO CON DATOS DEL PRODUCTO
+            document.getElementById('productCategory').value = product.category || '';
+            document.getElementById('productName').value = product.name || '';
+            document.getElementById('productCode').value = product.code || '';
+            document.getElementById('productPrice').value = product.price || '';
+            document.getElementById('productStock').value = product.stock || '';
+            document.getElementById('productDescription').value = product.description || '';
+            document.getElementById('productImage').value = product.image || '';
+            
+            // GUARDAR ID PARA ACTUALIZACIÓN
+            editingProductId = productId;
+            
+            // CAMBIAR BOTÓN A "ACTUALIZAR"
+            const submitBtn = document.querySelector('#productForm button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Actualizar Producto';
+                submitBtn.className = 'hero-btn btn-primary';
+            }
+            
+            // MOSTRAR BOTÓN CANCELAR
+            const cancelEditBtn = document.getElementById('cancelEditBtn');
+            if (cancelEditBtn) cancelEditBtn.style.display = 'flex';
+            
+            showNotification(`✏️ Editando: ${product.name}`);
+            
+            // Desplazar al formulario
+            document.getElementById('admin').scrollIntoView({ behavior: 'smooth' });
         }
+    } catch (error) {
+        console.error('Error al cargar producto:', error);
+        alert('❌ Error al cargar el producto: ' + error.message);
+    }
+};
 
-        // ==============================
-        // AUTENTICACIÓN
-        // ==============================
+window.deleteProduct = async function(productId) {
+    if (confirm('¿Estás seguro de eliminar este producto?')) {
+        try {
+            await deleteProductFromFirebase(productId);
+            showNotification('✅ Producto eliminado correctamente');
+            
+            // Si estábamos editando este producto, cancelar edición
+            if (editingProductId === productId) {
+                cancelEditMode();
+            }
+        } catch (error) {
+            console.error('❌ Error al eliminar:', error);
+            alert('❌ Error al eliminar producto: ' + error.message);
+        }
+    }
+};
 
-        auth.onAuthStateChanged((user) => {
+// ==============================
+// CANCELAR MODO EDICIÓN
+// ==============================
+function cancelEditMode() {
+    editingProductId = null;
+    const productForm = document.getElementById('productForm');
+    if (productForm) productForm.reset();
+    
+    const submitBtn = document.querySelector('#productForm button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.innerHTML = '<i class="fas fa-plus"></i> Agregar Producto';
+        submitBtn.className = 'hero-btn btn-primary';
+    }
+    
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    if (cancelEditBtn) cancelEditBtn.style.display = 'none';
+}
+
+// ==============================
+// FUNCIÓN DE NOTIFICACIÓN
+// ==============================
+function showNotification(message) {
+    // Crear elemento de notificación
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #25D366;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        z-index: 3000;
+        animation: fadeIn 0.3s ease-out;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    `;
+    notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+    document.body.appendChild(notification);
+    
+    // Remover después de 3 segundos
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
+// ==============================
+// INICIALIZACIÓN CUANDO EL USUARIO INICIA SESIÓN
+// ==============================
+if (auth) {
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            console.log('👤 Usuario autenticado:', user.email);
             currentUser = user;
             
-            if (user) {
-                const initials = user.displayName 
-                    ? user.displayName.split(' ').map(n => n[0]).join('').toUpperCase()
-                    : user.email[0].toUpperCase();
-                userAvatar.textContent = initials;
-                
-                // Cargar inventario cuando el usuario está autenticado
-                loadInventoryFromFirebase();
-            } else {
-                // Si no hay usuario, redirigir al login
-                window.location.href = 'index.html';
-            }
-        });
-
-        logoutBtn.addEventListener('click', async () => {
-            try {
-                // Desuscribirse de los cambios en tiempo real
-                if (unsubscribeInventory) {
-                    unsubscribeInventory();
-                }
-                
-                await auth.signOut();
-                window.location.href = 'index.html';
-            } catch (error) {
-                alert('Error al cerrar sesión: ' + error.message);
-            }
-        });
-
-        // ==============================
-        // INICIALIZACIÓN
-        // ==============================
-
-        function scrollToCategories() {
-            document.getElementById('categories').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function init() {
-            updateCartCount();
+            // CARGAR PRODUCTOS DESDE FIREBASE
+            loadProductsFromFirebase();
             
-            // Agregar estilos para las páginas de productos
-            const style = document.createElement('style');
-            style.textContent = `
-                .products-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                    gap: 30px;
-                    margin: 40px 0;
-                }
-                .product-card {
-                    background: rgba(20, 35, 70, 0.7);
-                    border-radius: 15px;
-                    overflow: hidden;
-                    border: 1px solid rgba(74, 144, 226, 0.2);
-                    transition: all 0.3s ease;
-                }
-                .product-card:hover {
-                    transform: translateY(-5px);
-                    box-shadow: 0 15px 30px rgba(74, 144, 226, 0.2);
-                    border-color: rgba(74, 144, 226, 0.5);
-                }
-                .product-image {
-                    height: 250px;
-                    background: linear-gradient(45deg, #1a237e, #283593);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    overflow: hidden;
-                }
-                .product-image img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    transition: transform 0.3s ease;
-                }
-                .product-card:hover .product-image img {
-                    transform: scale(1.05);
-                }
-                .product-info {
-                    padding: 20px;
-                }
-                .product-header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: start;
-                    margin-bottom: 15px;
-                }
-                .product-title {
-                    font-size: 1.3rem;
-                    color: #fff;
-                    flex: 1;
-                }
-                .product-price {
-                    color: #63b3ff;
-                    font-size: 1.4rem;
-                    font-weight: 700;
-                    margin-left: 15px;
-                }
-                .product-code {
-                    color: #a0c8ff;
-                    font-size: 0.9rem;
-                    margin-bottom: 10px;
-                    display: flex;
-                    align-items: center;
-                    gap: 5px;
-                }
-                .product-desc {
-                    color: #a0c8ff;
-                    font-size: 0.95rem;
-                    line-height: 1.5;
-                    margin-bottom: 20px;
-                }
-                .product-stock {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-bottom: 15px;
-                    padding: 10px;
-                    background: rgba(10, 20, 40, 0.5);
-                    border-radius: 8px;
-                }
-                .stock-label {
-                    color: #a0c8ff;
-                }
-                .stock-amount {
-                    font-weight: 600;
-                }
-                .product-actions {
-                    display: flex;
-                    gap: 10px;
-                }
-                .add-to-cart-btn {
-                    flex: 1;
-                    padding: 12px;
-                    background: linear-gradient(to right, #4a90e2, #63b3ff);
-                    color: white;
-                    border: none;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    font-weight: 600;
-                    transition: all 0.3s ease;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 8px;
-                }
-                .add-to-cart-btn:hover {
-                    background: linear-gradient(to right, #3a80d2, #53a3ff);
-                }
-                .buy-now-btn {
-                    padding: 12px 20px;
-                    background: rgba(37, 211, 102, 0.2);
-                    color: #25D366;
-                    border: 1px solid rgba(37, 211, 102, 0.3);
-                    border-radius: 8px;
-                    cursor: pointer;
-                    font-weight: 600;
-                    transition: all 0.3s ease;
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-                }
-                .buy-now-btn:hover {
-                    background: rgba(37, 211, 102, 0.3);
-                }
-            `;
-            document.head.appendChild(style);
-        }
-
-        init();
-
-        document.addEventListener('click', (e) => {
-            if (cartModal.classList.contains('active') && 
-                !cartModal.contains(e.target) && 
-                !cartIcon.contains(e.target)) {
-                cartModal.classList.remove('active');
+        } else {
+            console.log('🔒 No autenticado, redirigiendo...');
+            // Redirigir a la página de login si no está autenticado
+            if (window.location.pathname.includes('dashboard.html') || 
+                window.location.pathname.includes('admin.html')) {
+                window.location.href = 'index.html';
             }
-        });
+        }
+    });
+}
+
+// ==============================
+// ACTUALIZAR CÓDIGO HTML GENERADO (simplificado)
+// ==============================
+function updateHtmlCode() {
+    const generatedHtmlCode = document.getElementById('generatedHtmlCode');
+    if (!generatedHtmlCode) return;
+    
+    let htmlCode = `<!-- PRODUCTOS ACTUALIZADOS AUTOMÁTICAMENTE -->\n`;
+    htmlCode += `<!-- Fecha: ${new Date().toLocaleDateString()} -->\n`;
+    htmlCode += `<div class="products-grid">\n\n`;
+    
+    inventory.forEach(product => {
+        htmlCode += `    <div class="product-card">\n`;
+        htmlCode += `        <div class="product-image">\n`;
+        htmlCode += `            <img src="${product.image || 'https://via.placeholder.com/300x200?text=Producto'}" alt="${product.name}">\n`;
+        htmlCode += `        </div>\n`;
+        htmlCode += `        <div class="product-info">\n`;
+        htmlCode += `            <h3>${product.name}</h3>\n`;
+        htmlCode += `            <p class="price">$${product.price ? product.price.toFixed(2) : '0.00'}</p>\n`;
+        htmlCode += `            <p class="code">Código: ${product.code || 'N/A'}</p>\n`;
+        htmlCode += `            <p class="description">${product.description || ''}</p>\n`;
+        htmlCode += `            <p class="stock">Stock: ${product.stock || 0} unidades</p>\n`;
+        htmlCode += `            <button class="add-to-cart" onclick="addToCart('${product.code}')">Agregar al Carrito</button>\n`;
+        htmlCode += `        </div>\n`;
+        htmlCode += `    </div>\n\n`;
+    });
+    
+    htmlCode += `</div>`;
+    
+    generatedHtmlCode.textContent = htmlCode;
+}
+
+// ==============================
+// FUNCIONES DEL CARRITO (SIMPLIFICADAS)
+// ==============================
+function updateCartCount() {
+    const cartCount = document.getElementById('cartCount');
+    if (cartCount) {
+        const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = total;
+    }
+}
+
+window.addToCart = function(productCode) {
+    const product = inventory.find(p => p.code === productCode);
+    if (product) {
+        const existingItem = cart.find(item => item.id === productCode);
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({ id: productCode, quantity: 1 });
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+        showNotification(`✅ ${product.name} agregado al carrito`);
+    }
+};
+
+// ==============================
+// INICIALIZAR AL CARGAR LA PÁGINA
+// ==============================
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar carrito
+    updateCartCount();
+    
+    // Configurar botón cancelar edición si existe
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    if (cancelEditBtn) {
+        cancelEditBtn.addEventListener('click', cancelEditMode);
+    }
+    
+    console.log('🚀 Aplicación lista');
+});
     </script>
 </body>
 </html>
