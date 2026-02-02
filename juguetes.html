@@ -32,7 +32,7 @@
             outline: none;
         }
 
-        /* HEADER */
+        /* HEADER RESPONSIVE */
         .header {
             display: flex;
             justify-content: space-between;
@@ -43,7 +43,6 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            flex-wrap: wrap;
         }
 
         .logo {
@@ -51,6 +50,7 @@
             align-items: center;
             gap: 10px;
             cursor: pointer;
+            z-index: 1001;
         }
 
         .logo i {
@@ -66,11 +66,30 @@
             font-weight: 700;
         }
 
+        /* MENU HAMBURGUESA */
+        .menu-toggle {
+            display: none;
+            background: none;
+            color: white;
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(74, 144, 226, 0.2);
+        }
+
+        /* NAV MENU DESPLEGABLE */
         .nav-menu {
             display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
+            gap: 10px;
+            align-items: center;
         }
 
         .nav-link {
@@ -81,6 +100,7 @@
             align-items: center;
             gap: 8px;
             font-weight: 500;
+            white-space: nowrap;
         }
 
         .nav-link:hover {
@@ -97,11 +117,12 @@
             font-size: 1.1rem;
         }
 
+        /* USER SECTION */
         .user-section {
             display: flex;
             align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
+            gap: 15px;
+            z-index: 1001;
         }
 
         .cart-icon {
@@ -137,7 +158,7 @@
         .user-avatar {
             width: 40px;
             height: 40px;
-            background: linear-gradient(45deg, #fd79a8, #e84393);
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -163,320 +184,11 @@
             transform: translateY(-2px);
         }
 
-        /* HERO SECTION JUGUETES */
-        .hero-section {
-            position: relative;
-            padding: 80px 5%;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('https://images.unsplash.com/photo-1531315630201-bb15abeb1653?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat;
-            opacity: 0.15;
-            z-index: -1;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero-title {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #fd79a8, #e84393);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: #fab1a0;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        /* PRODUCTS SECTION */
-        .products-section {
-            padding: 60px 5%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 50px;
-            color: #fd79a8;
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .product-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .product-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .product-info {
-            padding: 20px;
-        }
-
-        .product-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
-        }
-
-        .product-name {
-            font-size: 1.3rem;
-            color: #fd79a8;
-            font-weight: 600;
-        }
-
-        .product-price {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #4caf50;
-            background: rgba(76, 175, 80, 0.1);
-            padding: 5px 15px;
-            border-radius: 20px;
-        }
-
-        .product-code {
-            color: #a0c8ff;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .product-desc {
-            color: #b0bec5;
-            font-size: 0.95rem;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .product-stock {
-            margin-bottom: 20px;
-            padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            border-left: 4px solid;
-        }
-
-        .stock-high {
-            border-left-color: #4caf50;
-        }
-
-        .stock-medium {
-            border-left-color: #ff9800;
-        }
-
-        .stock-low {
-            border-left-color: #f44336;
-        }
-
-        .stock-text {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 500;
-        }
-
-        .product-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            overflow: hidden;
-            flex: 1;
-        }
-
-        .quantity-btn {
-            width: 40px;
-            height: 40px;
-            background: rgba(74, 144, 226, 0.2);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            font-size: 1.2rem;
-        }
-
-        .quantity-btn:hover {
-            background: rgba(74, 144, 226, 0.4);
-        }
-
-        .quantity-input {
-            width: 60px;
-            height: 40px;
-            background: transparent;
-            border: none;
-            text-align: center;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .quantity-input::-webkit-inner-spin-button,
-        .quantity-input::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .buy-btn {
-            flex: 2;
-            padding: 0 20px;
-            background: linear-gradient(45deg, #fd79a8, #e84393);
-            color: white;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            min-height: 40px;
-        }
-
-        .buy-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(253, 121, 168, 0.4);
-        }
-
-        .add-to-cart-btn {
-            flex: 1;
-            padding: 0 15px;
-            background: rgba(74, 144, 226, 0.2);
-            color: #63b3ff;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            min-height: 40px;
-            border: 1px solid rgba(74, 144, 226, 0.3);
-        }
-
-        .add-to-cart-btn:hover {
-            background: rgba(74, 144, 226, 0.3);
-            transform: translateY(-2px);
-        }
-
-        /* FOOTER */
-        .footer {
-            background: rgba(15, 25, 60, 0.95);
-            padding: 60px 5% 30px;
-            margin-top: 60px;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-section h3 {
-            color: #63b3ff;
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-        }
-
-        .footer-links {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .footer-links a {
-            color: #a0c8ff;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .footer-links a:hover {
-            color: #4a90e2;
-            transform: translateX(5px);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .social-icon:hover {
-            background: #4a90e2;
-            transform: translateY(-3px);
-        }
-
-        .copyright {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #a0c8ff;
-        }
-
-        /* CART MODAL */
+        /* CART MODAL RESPONSIVE */
         .cart-modal {
             position: fixed;
             top: 0;
-            right: -400px;
+            right: -100%;
             width: 100%;
             max-width: 400px;
             height: 100vh;
@@ -490,6 +202,21 @@
 
         .cart-modal.active {
             right: 0;
+        }
+
+        .cart-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+        }
+
+        .cart-overlay.active {
+            display: block;
         }
 
         .cart-header {
@@ -547,6 +274,11 @@
         .cart-item-name {
             font-weight: 600;
             color: #63b3ff;
+        }
+
+        .cart-item-price {
+            color: #4caf50;
+            font-weight: bold;
         }
 
         .product-code {
@@ -657,6 +389,480 @@
             opacity: 0.5;
         }
 
+        /* HERO SECTION JUGUETES */
+        .hero-section {
+            position: relative;
+            padding: 60px 5%;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1531315630201-bb15abeb1653?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat;
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #FF4081, #FF9800);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: #FFCC80;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* PRODUCTS SECTION */
+        .products-section {
+            padding: 40px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #FF9800;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            color: #FFCC80;
+            font-weight: 600;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #4caf50;
+            background: rgba(76, 175, 80, 0.1);
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        .product-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .product-code {
+            color: #a0c8ff;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .product-age {
+            color: #FFCC80;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .product-type {
+            color: #90CAF9;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .product-desc {
+            color: #b0bec5;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .product-stock {
+            margin-bottom: 20px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .stock-high {
+            border-left-color: #4caf50;
+        }
+
+        .stock-medium {
+            border-left-color: #ff9800;
+        }
+
+        .stock-low {
+            border-left-color: #f44336;
+        }
+
+        .stock-text {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .product-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(74, 144, 226, 0.2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .quantity-btn:hover {
+            background: rgba(74, 144, 226, 0.4);
+        }
+
+        .quantity-input {
+            width: 60px;
+            height: 40px;
+            background: transparent;
+            border: none;
+            text-align: center;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .quantity-input::-webkit-inner-spin-button,
+        .quantity-input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .buy-btn {
+            padding: 12px;
+            background: linear-gradient(45deg, #FF4081, #FF9800);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+        }
+
+        .add-to-cart-btn {
+            padding: 12px;
+            background: rgba(74, 144, 226, 0.2);
+            color: #63b3ff;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            border: 1px solid rgba(74, 144, 226, 0.3);
+        }
+
+        .add-to-cart-btn:hover {
+            background: rgba(74, 144, 226, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* SEARCH AND FILTERS */
+        .search-container {
+            max-width: 600px;
+            margin: 30px auto 40px;
+            padding: 0 20px;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #FF9800;
+            box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.3);
+        }
+
+        .search-btn {
+            padding: 0 25px;
+            background: linear-gradient(45deg, #FF4081, #FF9800);
+            color: white;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a0c8ff;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 152, 0, 0.2);
+            color: #FFCC80;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(45deg, #FF4081, #FF9800);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* CATEGORY FILTERS */
+        .category-filters {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        .category-btn {
+            padding: 10px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #FFCC80;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-btn:hover {
+            background: rgba(255, 152, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .category-btn.active {
+            background: linear-gradient(45deg, #FF4081, #FF9800);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* AGE FILTERS */
+        .age-filters {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        .age-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #90CAF9;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .age-btn:hover {
+            background: rgba(144, 202, 249, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .age-btn.active {
+            background: linear-gradient(45deg, #2196F3, #03A9F4);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: rgba(15, 25, 60, 0.95);
+            padding: 40px 5% 30px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section h3 {
+            color: #63b3ff;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: #a0c8ff;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-links a:hover {
+            color: #4a90e2;
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: #4a90e2;
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a0c8ff;
+        }
+
         /* WHATSAPP BUTTON */
         .whatsapp-btn {
             position: fixed;
@@ -681,7 +887,7 @@
             box-shadow: 0 10px 30px rgba(37, 211, 102, 0.6);
         }
 
-        /* LOADING & ERROR STATES */
+        /* LOADING & ERROR */
         .loading {
             text-align: center;
             padding: 40px;
@@ -708,143 +914,109 @@
             text-align: center;
         }
 
-        /* SEARCH BAR */
-        .search-container {
-            max-width: 600px;
-            margin: 30px auto 50px;
-            padding: 0 20px;
-        }
-
-        .search-bar {
+        /* MENU DESPLEGABLE MOBILE */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            max-width: 300px;
+            height: 100vh;
+            background: rgba(15, 25, 60, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            transition: left 0.3s ease;
             display: flex;
-            gap: 10px;
+            flex-direction: column;
+            padding-top: 80px;
         }
 
-        .search-input {
-            flex: 1;
+        .mobile-menu.active {
+            left: 0;
+        }
+
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+        }
+
+        .mobile-menu-overlay.active {
+            display: block;
+        }
+
+        .mobile-nav {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .mobile-nav-link {
             padding: 15px 20px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #fd79a8;
-            box-shadow: 0 0 0 2px rgba(253, 121, 168, 0.3);
-        }
-
-        .search-btn {
-            padding: 0 30px;
-            background: linear-gradient(45deg, #fd79a8, #e84393);
-            color: white;
-            border-radius: 10px;
-            font-weight: 600;
+            border-radius: 8px;
+            margin-bottom: 10px;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .search-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(253, 121, 168, 0.4);
-        }
-
-        /* FILTERS */
-        .filters {
-            display: flex;
-            justify-content: center;
             gap: 15px;
-            flex-wrap: wrap;
-            margin-bottom: 40px;
-            padding: 0 20px;
+            font-size: 1.1rem;
+            border-left: 4px solid transparent;
         }
 
-        .filter-btn {
-            padding: 10px 25px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #a0c8ff;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .filter-btn:hover {
-            background: rgba(253, 121, 168, 0.2);
-            color: #fd79a8;
-            transform: translateY(-2px);
-        }
-
-        .filter-btn.active {
-            background: linear-gradient(45deg, #fd79a8, #e84393);
-            color: white;
-            border-color: transparent;
-        }
-
-        /* AGE FILTERS */
-        .age-filters {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-            padding: 0 20px;
-        }
-
-        .age-filter-btn {
-            padding: 8px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #a0c8ff;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .age-filter-btn:hover {
+        .mobile-nav-link:hover {
             background: rgba(74, 144, 226, 0.2);
-            color: #63b3ff;
+            transform: translateX(5px);
         }
 
-        .age-filter-btn.active {
+        .mobile-nav-link.active {
             background: rgba(74, 144, 226, 0.3);
-            color: #63b3ff;
-            border-color: #4a90e2;
+            border-left-color: #4a90e2;
+        }
+
+        .mobile-user-section {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: auto;
+        }
+
+        .mobile-user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
         /* RESPONSIVE DESIGN */
         @media (max-width: 1024px) {
             .hero-title {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
             }
             
             .section-title {
-                font-size: 2rem;
+                font-size: 1.8rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             }
         }
 
         @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 15px;
-                padding: 15px 20px;
+            .menu-toggle {
+                display: flex;
             }
             
             .nav-menu {
-                order: 3;
-                width: 100%;
-                justify-content: center;
-                margin-top: 10px;
+                display: none;
             }
             
-            .user-section {
-                order: 2;
+            .user-section .logout-btn {
+                display: none;
             }
             
             .hero-title {
@@ -855,24 +1027,6 @@
                 font-size: 1rem;
             }
             
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            }
-            
-            .product-actions {
-                flex-direction: column;
-            }
-            
-            .quantity-controls,
-            .buy-btn,
-            .add-to-cart-btn {
-                width: 100%;
-            }
-            
-            .cart-modal {
-                max-width: 100%;
-            }
-            
             .search-bar {
                 flex-direction: column;
             }
@@ -880,55 +1034,82 @@
             .search-btn {
                 width: 100%;
                 justify-content: center;
+                padding: 15px;
             }
             
-            .filters, .age-filters {
-                flex-direction: column;
-                align-items: center;
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
             
-            .filter-btn, .age-filter-btn {
-                width: 100%;
-                max-width: 300px;
-                text-align: center;
+            .cart-modal {
+                max-width: 100%;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .category-filters, .age-filters {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 10px;
+            }
+            
+            .category-btn, .age-btn {
+                flex-shrink: 0;
             }
         }
 
         @media (max-width: 480px) {
-            .nav-menu {
-                flex-direction: column;
-                align-items: center;
+            .header {
+                padding: 15px;
             }
             
-            .nav-link {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .user-section {
-                flex-direction: column;
-                width: 100%;
-                align-items: stretch;
-            }
-            
-            .logout-btn {
-                justify-content: center;
+            .company-name {
+                font-size: 1.2rem;
             }
             
             .hero-title {
                 font-size: 1.8rem;
             }
             
+            .hero-section {
+                padding: 40px 20px;
+            }
+            
             .section-title {
                 font-size: 1.5rem;
+                margin-bottom: 30px;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
             
             .product-card {
                 margin: 0 10px;
             }
             
-            .footer-content {
-                grid-template-columns: 1fr;
+            .filters, .category-filters, .age-filters {
+                gap: 8px;
+                padding: 0 10px;
+            }
+            
+            .filter-btn, .category-btn, .age-btn {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+            
+            .user-avatar {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            
+            .cart-icon {
+                padding: 6px;
             }
             
             .whatsapp-btn {
@@ -952,6 +1133,18 @@
             }
         }
 
+        @keyframes bounce {
+            0%, 20%, 60%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            80% {
+                transform: translateY(-5px);
+            }
+        }
+
         /* SCROLLBAR */
         ::-webkit-scrollbar {
             width: 8px;
@@ -969,16 +1162,90 @@
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(74, 144, 226, 0.7);
         }
+
+        /* SPECIAL FEATURES FOR TOYS */
+        .age-badge {
+            background: linear-gradient(45deg, #2196F3, #03A9F4);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .educational-badge {
+            background: linear-gradient(45deg, #4CAF50, #8BC34A);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .feature-badge {
+            background: rgba(255, 152, 0, 0.2);
+            color: #FFCC80;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .safety-info {
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid #4CAF50;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #81C784;
+        }
+
+        .safety-info i {
+            margin-right: 8px;
+        }
+
+        /* PROMO BANNER */
+        .promo-banner {
+            background: linear-gradient(45deg, #FF4081, #FF9800);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 20px auto 30px;
+            max-width: 1200px;
+            text-align: center;
+            animation: bounce 2s infinite;
+        }
+
+        .promo-banner i {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        .promo-text {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header class="header">
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        
         <div class="logo" onclick="window.location.href='home.html'">
             <i class="fas fa-store"></i>
             <h1 class="company-name">HEYDIN-KAYSER</h1>
         </div>
         
+        <!-- Desktop Navigation -->
         <nav class="nav-menu">
             <a href="home.html" class="nav-link">
                 <i class="fas fa-home"></i> Inicio
@@ -1011,42 +1278,124 @@
         </div>
     </header>
 
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <nav class="mobile-nav">
+            <a href="home.html" class="mobile-nav-link">
+                <i class="fas fa-home"></i> Inicio
+            </a>
+            <a href="comida.html" class="mobile-nav-link">
+                <i class="fas fa-utensils"></i> Comida
+            </a>
+            <a href="muebles.html" class="mobile-nav-link">
+                <i class="fas fa-couch"></i> Muebles
+            </a>
+            <a href="juguetes.html" class="mobile-nav-link active">
+                <i class="fas fa-gamepad"></i> Juguetes
+            </a>
+            <a href="bisuteria.html" class="mobile-nav-link">
+                <i class="fas fa-gem"></i> Bisutería
+            </a>
+        </nav>
+        
+        <div class="mobile-user-section">
+            <div class="mobile-user-info">
+                <div class="user-avatar" id="mobileUserAvatar">U</div>
+                <div>
+                    <div id="mobileUserName">Usuario</div>
+                    <div id="mobileUserEmail" style="font-size: 0.9rem; color: #a0c8ff;">email@ejemplo.com</div>
+                </div>
+            </div>
+            
+            <button class="logout-btn" id="mobileLogoutBtn" style="width: 100%; justify-content: center;">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </button>
+        </div>
+    </div>
+
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="hero-bg"></div>
         <div class="hero-content">
-            <h1 class="hero-title">Juguetes Divertidos para Todas las Edades</h1>
+            <h1 class="hero-title">¡Diversión y Aprendizaje!</h1>
             <p class="hero-subtitle">
-                Descubre nuestra increíble colección de juguetes educativos, divertidos y creativos. 
-                Desde bebés hasta adultos, tenemos el juguete perfecto para cada momento especial.
+                Descubre nuestra increíble colección de juguetes educativos, electrónicos y tradicionales. 
+                ¡La felicidad de los más pequeños está en nuestras manos!
             </p>
         </div>
     </section>
 
+    <!-- Promo Banner -->
+    <div class="promo-banner">
+        <i class="fas fa-gift"></i>
+        <span class="promo-text">¡ENVÍO GRATIS en compras mayores a $50! | ¡3x2 en juguetes educativos seleccionados!</span>
+    </div>
+
     <!-- Search and Filters -->
     <div class="search-container">
         <div class="search-bar">
-            <input type="text" class="search-input" id="searchInput" placeholder="Buscar juguetes...">
+            <input type="text" class="search-input" id="searchInput" placeholder="Buscar juguetes por nombre, tipo o edad...">
             <button class="search-btn" id="searchBtn">
                 <i class="fas fa-search"></i> Buscar
             </button>
         </div>
     </div>
 
+    <!-- Age Filters -->
     <div class="age-filters">
-        <button class="age-filter-btn active" data-age="all">Todas las Edades</button>
-        <button class="age-filter-btn" data-age="0-3">0-3 años</button>
-        <button class="age-filter-btn" data-age="4-6">4-6 años</button>
-        <button class="age-filter-btn" data-age="7-12">7-12 años</button>
-        <button class="age-filter-btn" data-age="13+">13+ años</button>
+        <button class="age-btn active" data-age="all">
+            <i class="fas fa-child"></i> Todas las edades
+        </button>
+        <button class="age-btn" data-age="0-3">
+            <i class="fas fa-baby"></i> 0-3 años
+        </button>
+        <button class="age-btn" data-age="4-6">
+            <i class="fas fa-child"></i> 4-6 años
+        </button>
+        <button class="age-btn" data-age="7-10">
+            <i class="fas fa-user-graduate"></i> 7-10 años
+        </button>
+        <button class="age-btn" data-age="10+">
+            <i class="fas fa-user-friends"></i> 10+ años
+        </button>
     </div>
 
+    <!-- Category Filters -->
+    <div class="category-filters">
+        <button class="category-btn active" data-category="all">
+            <i class="fas fa-th-large"></i> Todos
+        </button>
+        <button class="category-btn" data-category="educativo">
+            <i class="fas fa-graduation-cap"></i> Educativo
+        </button>
+        <button class="category-btn" data-category="electronico">
+            <i class="fas fa-robot"></i> Electrónico
+        </button>
+        <button class="category-btn" data-category="muñecas">
+            <i class="fas fa-female"></i> Muñecas
+        </button>
+        <button class="category-btn" data-category="vehiculos">
+            <i class="fas fa-car"></i> Vehículos
+        </button>
+        <button class="category-btn" data-category="juegos">
+            <i class="fas fa-dice"></i> Juegos
+        </button>
+        <button class="category-btn" data-category="exterior">
+            <i class="fas fa-bicycle"></i> Exterior
+        </button>
+    </div>
+
+    <!-- General Filters -->
     <div class="filters">
         <button class="filter-btn active" data-filter="all">Todos</button>
         <button class="filter-btn" data-filter="stock-high">En Stock</button>
         <button class="filter-btn" data-filter="stock-low">Poco Stock</button>
         <button class="filter-btn" data-filter="price-low">Menor Precio</button>
         <button class="filter-btn" data-filter="price-high">Mayor Precio</button>
+        <button class="filter-btn" data-filter="educational">Educativos</button>
     </div>
 
     <!-- Products Section -->
@@ -1062,7 +1411,7 @@
         </div>
         
         <div class="products-grid" id="productsGrid">
-            <!-- Los productos se cargarán aquí desde Firestore -->
+            <!-- Los juguetes se cargarán aquí desde Firestore -->
         </div>
     </section>
 
@@ -1070,10 +1419,10 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
-                <h3>Heydin-Kayser</h3>
+                <h3>Heydin-Kayser Juguetes</h3>
                 <p style="color: #a0c8ff; line-height: 1.6;">
-                    Tu tienda de confianza para productos de alta calidad. 
-                    Comidas, muebles, juguetes y bisutería con los mejores precios.
+                    Tu tienda de confianza para juguetes educativos y divertidos. 
+                    Calidad, seguridad y diversión garantizada.
                 </p>
                 <div class="social-links">
                     <a href="#" class="social-icon">
@@ -1083,7 +1432,7 @@
                         <i class="fab fa-instagram"></i>
                     </a>
                     <a href="#" class="social-icon">
-                        <i class="fab fa-twitter"></i>
+                        <i class="fab fa-youtube"></i>
                     </a>
                     <a href="#" class="social-icon">
                         <i class="fab fa-tiktok"></i>
@@ -1110,35 +1459,58 @@
             </div>
             
             <div class="footer-section">
-                <h3>Contacto</h3>
+                <h3>Contacto Juguetes</h3>
                 <div class="footer-links">
                     <a href="tel:+593997595515">
                         <i class="fas fa-phone"></i> +593 99 759 5515
                     </a>
-                    <a href="mailto:ventas@heydin-kayser.com">
-                        <i class="fas fa-envelope"></i> ventas@heydin-kayser.com
+                    <a href="mailto:juguetes@heydin-kayser.com">
+                        <i class="fas fa-envelope"></i> juguetes@heydin-kayser.com
                     </a>
                     <a href="https://wa.me/593997595515" target="_blank">
                         <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                    <a href="#">
+                        <i class="fas fa-truck"></i> Envíos Nacionales
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Seguridad</h3>
+                <div class="footer-links">
+                    <a href="#">
+                        <i class="fas fa-shield-alt"></i> Juguetes Certificados
+                    </a>
+                    <a href="#">
+                        <i class="fas fa-leaf"></i> Materiales No Tóxicos
+                    </a>
+                    <a href="#">
+                        <i class="fas fa-child"></i> Por Edad Recomendada
+                    </a>
+                    <a href="#">
+                        <i class="fas fa-award"></i> Garantía de Calidad
                     </a>
                 </div>
             </div>
         </div>
         
         <div class="copyright">
-            © 2023 Heydin-Kayser. Todos los derechos reservados.
+            © 2023 Heydin-Kayser Juguetes. Todos los derechos reservados.<br>
+            <small style="color: #81C784;">Certificación de seguridad EN71 | Materiales no tóxicos</small>
         </div>
     </footer>
 
     <!-- Cart Modal -->
+    <div class="cart-overlay" id="cartOverlay"></div>
     <div class="cart-modal" id="cartModal">
         <div class="cart-header">
-            <h3><i class="fas fa-shopping-cart"></i> Carrito de Compras</h3>
+            <h3><i class="fas fa-shopping-cart"></i> Carrito de Juguetes</h3>
             <button class="close-cart" id="closeCart">&times;</button>
         </div>
         
         <div class="cart-items" id="cartItems">
-            <!-- Los productos del carrito se mostrarán aquí -->
+            <!-- Los juguetes del carrito se mostrarán aquí -->
         </div>
         
         <div class="cart-footer">
@@ -1173,7 +1545,7 @@
             onSnapshot
         } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // Tu configuración de Firebase
+        // Configuración de Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCpFnSLx-ZUq6j27T-w_nvsdSvUrNs688g",
             authDomain: "heyding-kayser.firebaseapp.com",
@@ -1192,15 +1564,24 @@
 
         // Variables globales
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let toysProducts = [];
+        let toyProducts = [];
         let currentUser = null;
         let currentFilter = 'all';
-        let currentAgeFilter = 'all';
+        let currentCategory = 'all';
+        let currentAge = 'all';
 
         // Elementos del DOM
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+        const mobileUserAvatar = document.getElementById('mobileUserAvatar');
+        const mobileUserName = document.getElementById('mobileUserName');
+        const mobileUserEmail = document.getElementById('mobileUserEmail');
         const cartIcon = document.getElementById('cartIcon');
         const cartCount = document.getElementById('cartCount');
         const cartModal = document.getElementById('cartModal');
+        const cartOverlay = document.getElementById('cartOverlay');
         const closeCart = document.getElementById('closeCart');
         const cartItems = document.getElementById('cartItems');
         const cartTotal = document.getElementById('cartTotal');
@@ -1213,22 +1594,39 @@
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
         const filterButtons = document.querySelectorAll('.filter-btn');
-        const ageFilterButtons = document.querySelectorAll('.age-filter-btn');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const ageButtons = document.querySelectorAll('.age-btn');
 
-        // Función para cargar productos de juguetes desde Firestore
-        function loadToysProducts() {
+        // Función para abrir/cerrar menú móvil
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('active');
+            mobileMenuOverlay.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        }
+
+        // Función para abrir/cerrar carrito
+        function toggleCart() {
+            cartModal.classList.toggle('active');
+            cartOverlay.classList.toggle('active');
+            document.body.style.overflow = cartModal.classList.contains('active') ? 'hidden' : '';
+            if (cartModal.classList.contains('active')) {
+                updateCartUI();
+            }
+        }
+
+        // Función para cargar juguetes desde Firestore
+        function loadToyProducts() {
             try {
                 loadingElement.style.display = 'block';
                 productsError.style.display = 'none';
                 
-                // Consultar solo productos de juguetes
                 const q = query(
                     collection(db, "products"),
                     where("category", "==", "juguetes")
                 );
                 
                 const unsubscribe = onSnapshot(q, (querySnapshot) => {
-                    toysProducts = [];
+                    toyProducts = [];
                     productsGrid.innerHTML = '';
                     
                     querySnapshot.forEach((doc) => {
@@ -1236,11 +1634,10 @@
                             id: doc.id,
                             ...doc.data()
                         };
-                        toysProducts.push(product);
+                        toyProducts.push(product);
                     });
                     
-                    // Mostrar productos (ordenaremos localmente)
-                    displayProducts(toysProducts);
+                    displayProducts(toyProducts);
                     loadingElement.style.display = 'none';
                     
                 }, (error) => {
@@ -1253,7 +1650,7 @@
                 return unsubscribe;
                 
             } catch (error) {
-                console.error("Error en loadToysProducts:", error);
+                console.error("Error en loadToyProducts:", error);
                 loadingElement.style.display = 'none';
                 productsError.style.display = 'block';
                 productsError.textContent = `Error: ${error.message}`;
@@ -1269,28 +1666,42 @@
                 productsGrid.innerHTML = `
                     <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #a0c8ff;">
                         <i class="fas fa-gamepad fa-3x" style="margin-bottom: 20px;"></i>
-                        <p style="font-size: 1.2rem;">No se encontraron juguetes en esta categoría</p>
+                        <p style="font-size: 1.2rem;">No se encontraron juguetes</p>
                     </div>
                 `;
                 return;
             }
             
-            // Ordenar localmente por nombre
             let sortedProducts = [...products];
             sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
             
-            // Aplicar filtro por edad (simulado - en producción deberías tener un campo 'age_range')
-            let ageFilteredProducts = [...sortedProducts];
+            // Filtrar por categoría
+            let filteredProducts = [...sortedProducts];
+            if (currentCategory !== 'all') {
+                filteredProducts = filteredProducts.filter(p => 
+                    p.subcategory && p.subcategory.toLowerCase() === currentCategory
+                );
+            }
             
-            // Aplicar filtro por stock/precio
-            let filteredProducts = [...ageFilteredProducts];
+            // Filtrar por edad
+            if (currentAge !== 'all') {
+                filteredProducts = filteredProducts.filter(p => {
+                    if (!p.age_range) return true;
+                    if (currentAge === '0-3') return p.age_range.includes('0-3');
+                    if (currentAge === '4-6') return p.age_range.includes('4-6') || p.age_range.includes('3-6');
+                    if (currentAge === '7-10') return p.age_range.includes('7-10') || p.age_range.includes('6-10');
+                    if (currentAge === '10+') return p.age_range.includes('10+') || p.age_range.includes('8+');
+                    return true;
+                });
+            }
             
+            // Aplicar filtro de orden/stock
             switch(currentFilter) {
                 case 'stock-high':
-                    filteredProducts = filteredProducts.filter(p => p.stock > 5);
+                    filteredProducts = filteredProducts.filter(p => p.stock > 10);
                     break;
                 case 'stock-low':
-                    filteredProducts = filteredProducts.filter(p => p.stock <= 5 && p.stock > 0);
+                    filteredProducts = filteredProducts.filter(p => p.stock <= 10 && p.stock > 0);
                     break;
                 case 'price-low':
                     filteredProducts.sort((a, b) => a.price - b.price);
@@ -1298,33 +1709,30 @@
                 case 'price-high':
                     filteredProducts.sort((a, b) => b.price - a.price);
                     break;
+                case 'educational':
+                    filteredProducts = filteredProducts.filter(p => 
+                        p.subcategory === 'educativo' || 
+                        p.features?.includes('educativo') ||
+                        p.description?.toLowerCase().includes('educativo')
+                    );
+                    break;
             }
             
             filteredProducts.forEach(product => {
-                const stockClass = product.stock > 5 ? 'stock-high' : 
+                const stockClass = product.stock > 10 ? 'stock-high' : 
                                  product.stock > 0 ? 'stock-medium' : 'stock-low';
                 
-                const stockText = product.stock > 5 ? 'Disponible' :
+                const stockText = product.stock > 10 ? 'Disponible' :
                                 product.stock > 0 ? 'Poco Stock' : 'Agotado';
                 
-                // Determinar icono según tipo de juguete
-                let toyIcon = 'fa-gamepad';
-                if (product.name.toLowerCase().includes('peluche') || 
-                    product.name.toLowerCase().includes('oso') || 
-                    product.name.toLowerCase().includes('animal')) {
-                    toyIcon = 'fa-paw';
-                } else if (product.name.toLowerCase().includes('carro') || 
-                          product.name.toLowerCase().includes('auto') || 
-                          product.name.toLowerCase().includes('vehículo')) {
-                    toyIcon = 'fa-car';
-                } else if (product.name.toLowerCase().includes('muñeca') || 
-                          product.name.toLowerCase().includes('barbie')) {
-                    toyIcon = 'fa-child';
-                } else if (product.name.toLowerCase().includes('lego') || 
-                          product.name.toLowerCase().includes('bloque') || 
-                          product.name.toLowerCase().includes('construcción')) {
-                    toyIcon = 'fa-cubes';
-                }
+                // Obtener icono según subcategoría
+                let categoryIcon = 'fa-gamepad';
+                if (product.subcategory === 'educativo') categoryIcon = 'fa-graduation-cap';
+                if (product.subcategory === 'electronico') categoryIcon = 'fa-robot';
+                if (product.subcategory === 'muñecas') categoryIcon = 'fa-female';
+                if (product.subcategory === 'vehiculos') categoryIcon = 'fa-car';
+                if (product.subcategory === 'juegos') categoryIcon = 'fa-dice';
+                if (product.subcategory === 'exterior') categoryIcon = 'fa-bicycle';
                 
                 const productCard = document.createElement('div');
                 productCard.className = 'product-card';
@@ -1335,19 +1743,51 @@
                          onerror="this.src='https://images.unsplash.com/photo-1531315630201-bb15abeb1653?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
                     
                     <div class="product-info">
+                        ${product.age_range ? `
+                            <div class="age-badge">
+                                <i class="fas fa-child"></i> ${product.age_range} años
+                            </div>
+                        ` : ''}
+                        
                         <div class="product-header">
                             <h3 class="product-name">
-                                <i class="fas ${toyIcon}" style="margin-right: 8px;"></i>
-                                ${product.name}
+                                <i class="fas ${categoryIcon}"></i> ${product.name}
                             </h3>
                             <div class="product-price">$${parseFloat(product.price).toFixed(2)}</div>
                         </div>
                         
-                        <div class="product-code">
-                            <i class="fas fa-barcode"></i> Código: ${product.id}
+                        <div class="product-meta">
+                            <div class="product-code">
+                                <i class="fas fa-barcode"></i> Código: ${product.id}
+                            </div>
+                            <div class="product-age">
+                                <i class="fas fa-birthday-cake"></i> Edad: ${product.age_range || 'Todas las edades'}
+                            </div>
+                            <div class="product-type">
+                                <i class="fas fa-tag"></i> Tipo: ${product.subcategory || 'Juguete'}
+                            </div>
                         </div>
                         
-                        <p class="product-desc">${product.description || 'Juguete divertido y educativo para todas las edades.'}</p>
+                        ${product.safety_info ? `
+                            <div class="safety-info">
+                                <i class="fas fa-shield-alt"></i> ${product.safety_info}
+                            </div>
+                        ` : ''}
+                        
+                        <p class="product-desc">${product.description || 'Juguete divertido y seguro para horas de entretenimiento.'}</p>
+                        
+                        ${product.features ? `
+                            <div style="margin-bottom: 15px;">
+                                ${product.features.split(',').map(feature => {
+                                    const trimmed = feature.trim().toLowerCase();
+                                    if (trimmed.includes('educativo') || trimmed.includes('aprendizaje')) {
+                                        return `<span class="educational-badge">${feature.trim()}</span>`;
+                                    } else {
+                                        return `<span class="feature-badge">${feature.trim()}</span>`;
+                                    }
+                                }).join('')}
+                            </div>
+                        ` : ''}
                         
                         <div class="product-stock ${stockClass}">
                             <div class="stock-text">
@@ -1387,7 +1827,7 @@
         // Funciones para manejar cantidades
         window.decreaseQuantity = function(productId) {
             const input = document.getElementById(`quantity-${productId}`);
-            const product = toysProducts.find(p => p.id === productId);
+            const product = toyProducts.find(p => p.id === productId);
             
             if (!product || input.value <= 1) return;
             input.value = parseInt(input.value) - 1;
@@ -1395,7 +1835,7 @@
 
         window.increaseQuantity = function(productId) {
             const input = document.getElementById(`quantity-${productId}`);
-            const product = toysProducts.find(p => p.id === productId);
+            const product = toyProducts.find(p => p.id === productId);
             
             if (!product) return;
             if (parseInt(input.value) >= product.stock) {
@@ -1406,7 +1846,7 @@
         }
 
         window.validateQuantity = function(productId, value) {
-            const product = toysProducts.find(p => p.id === productId);
+            const product = toyProducts.find(p => p.id === productId);
             if (!product) return;
             
             let quantity = parseInt(value) || 1;
@@ -1439,7 +1879,7 @@
             let total = 0;
             
             cart.forEach((item, index) => {
-                const product = toysProducts.find(p => p.id === item.id);
+                const product = toyProducts.find(p => p.id === item.id);
                 if (!product) return;
                 
                 const itemTotal = product.price * item.quantity;
@@ -1473,7 +1913,7 @@
         // Actualizar cantidad en carrito
         window.updateCartQuantity = function(index, change) {
             const item = cart[index];
-            const product = toysProducts.find(p => p.id === item.id);
+            const product = toyProducts.find(p => p.id === item.id);
             
             if (!product) return;
             
@@ -1495,7 +1935,7 @@
 
         // Eliminar producto del carrito
         window.removeFromCart = function(index) {
-            if (confirm('¿Estás seguro de eliminar este producto del carrito?')) {
+            if (confirm('¿Estás seguro de eliminar este juguete del carrito?')) {
                 cart.splice(index, 1);
                 updateCartUI();
             }
@@ -1506,10 +1946,10 @@
             const quantityInput = document.getElementById(`quantity-${productId}`);
             const quantity = parseInt(quantityInput.value) || 1;
             
-            const product = toysProducts.find(p => p.id === productId);
+            const product = toyProducts.find(p => p.id === productId);
             
             if (!product) {
-                alert('Producto no encontrado');
+                alert('Juguete no encontrado');
                 return;
             }
             
@@ -1535,7 +1975,6 @@
             updateCartUI();
             showNotification(`¡${product.name} agregado al carrito!`);
             
-            // Resetear cantidad
             quantityInput.value = 1;
         }
 
@@ -1544,10 +1983,10 @@
             const quantityInput = document.getElementById(`quantity-${productId}`);
             const quantity = parseInt(quantityInput.value) || 1;
             
-            const product = toysProducts.find(p => p.id === productId);
+            const product = toyProducts.find(p => p.id === productId);
             
             if (!product) {
-                alert('Producto no encontrado');
+                alert('Juguete no encontrado');
                 return;
             }
             
@@ -1557,17 +1996,10 @@
                 return;
             }
             
-            // Limpiar carrito y agregar solo este producto
             cart = [{ id: productId, quantity }];
             updateCartUI();
-            cartModal.classList.add('active');
+            toggleCart();
             
-            // Scroll al carrito
-            setTimeout(() => {
-                cartModal.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-            
-            // Resetear cantidad
             quantityInput.value = 1;
         }
 
@@ -1594,7 +2026,7 @@
             }, 3000);
         }
 
-        // Buscar productos
+        // Buscar juguetes
         searchBtn.addEventListener('click', searchProducts);
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') searchProducts();
@@ -1604,13 +2036,16 @@
             const searchTerm = searchInput.value.toLowerCase().trim();
             
             if (!searchTerm) {
-                displayProducts(toysProducts);
+                displayProducts(toyProducts);
                 return;
             }
             
-            const filtered = toysProducts.filter(product => 
+            const filtered = toyProducts.filter(product => 
                 product.name.toLowerCase().includes(searchTerm) ||
                 (product.description && product.description.toLowerCase().includes(searchTerm)) ||
+                (product.subcategory && product.subcategory.toLowerCase().includes(searchTerm)) ||
+                (product.age_range && product.age_range.toLowerCase().includes(searchTerm)) ||
+                (product.features && product.features.toLowerCase().includes(searchTerm)) ||
                 product.id.toLowerCase().includes(searchTerm)
             );
             
@@ -1625,34 +2060,34 @@
             }
         }
 
-        // Filtros por categoría
+        // Filtros generales
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
                 filterButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
                 currentFilter = button.dataset.filter;
-                displayProducts(toysProducts);
+                displayProducts(toyProducts);
+            });
+        });
+
+        // Filtros por categoría
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                currentCategory = button.dataset.category;
+                displayProducts(toyProducts);
             });
         });
 
         // Filtros por edad
-        ageFilterButtons.forEach(button => {
+        ageButtons.forEach(button => {
             button.addEventListener('click', () => {
-                ageFilterButtons.forEach(btn => btn.classList.remove('active'));
+                ageButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
-                currentAgeFilter = button.dataset.age;
-                displayProducts(toysProducts);
+                currentAge = button.dataset.age;
+                displayProducts(toyProducts);
             });
-        });
-
-        // Abrir/Cerrar carrito
-        cartIcon.addEventListener('click', () => {
-            cartModal.classList.add('active');
-            updateCartUI();
-        });
-
-        closeCart.addEventListener('click', () => {
-            cartModal.classList.remove('active');
         });
 
         // Comprar por WhatsApp
@@ -1662,21 +2097,48 @@
                 return;
             }
             
-            let message = `¡Hola! Quiero hacer un pedido en Heydin-Kayser (Juguetes):\n\n`;
+            let message = `¡Hola! Quiero hacer un pedido de juguetes en Heydin-Kayser:\n\n`;
             let total = 0;
+            let hasEducationalToys = false;
             
             cart.forEach(item => {
-                const product = toysProducts.find(p => p.id === item.id);
+                const product = toyProducts.find(p => p.id === item.id);
                 if (product) {
                     const itemTotal = product.price * item.quantity;
                     total += itemTotal;
-                    message += `🎮 *${product.name}*\n`;
+                    
+                    if (product.subcategory === 'educativo' || 
+                        product.features?.includes('educativo')) {
+                        hasEducationalToys = true;
+                    }
+                    
+                    message += `🧸 *${product.name}*\n`;
                     message += `  Código: ${product.id}\n`;
                     message += `  Cantidad: ${item.quantity}\n`;
+                    message += `  Edad recomendada: ${product.age_range || 'Todas'}\n`;
+                    message += `  Tipo: ${product.subcategory || 'Juguete'}\n`;
                     message += `  Precio unitario: $${parseFloat(product.price).toFixed(2)}\n`;
                     message += `  Subtotal: $${itemTotal.toFixed(2)}\n\n`;
                 }
             });
+            
+            // Aplicar promoción 3x2 si hay juguetes educativos
+            let discountMessage = '';
+            if (hasEducationalToys && cart.length >= 3) {
+                discountMessage = `🎁 *PROMOCIÓN APLICADA: 3x2 en juguetes educativos*\n`;
+                message = discountMessage + message;
+            }
+            
+            // Verificar envío gratis
+            let shippingMessage = '';
+            if (total >= 50) {
+                shippingMessage = `🚚 *ENVÍO GRATIS APLICADO (Compra mayor a $50)*\n`;
+                message = shippingMessage + message;
+            } else {
+                shippingMessage = `🚚 *Costo de envío: $5.00 (Gratis en compras mayores a $50)*\n`;
+                message = shippingMessage + message;
+                total += 5;
+            }
             
             message += `💰 *TOTAL A PAGAR: $${total.toFixed(2)}*\n\n`;
             message += `👤 *Información del Cliente:*\n`;
@@ -1684,34 +2146,27 @@
             message += `  Email: ${currentUser?.email || '[Por favor ingresa tu email]'}\n`;
             message += `  Teléfono: [Por favor ingresa tu número]\n`;
             message += `  Dirección: [Por favor ingresa tu dirección]\n\n`;
-            message += `🎁 *Información del Regalo:*\n`;
-            message += `  ¿Es para un regalo? ______\n`;
-            message += `  ¿Para qué edad es el juguete? ______\n`;
-            message += `  ¿Alguna preferencia de empaque? ______\n\n`;
+            message += `👶 *Información del Niño/Niña:*\n`;
+            message += `  Nombre: ______\n`;
+            message += `  Edad: ______\n`;
+            message += `  ¿Es para alguna ocasión especial? ______\n\n`;
             message += `📋 *Resumen del Pedido:*\n`;
             cart.forEach(item => {
-                const product = toysProducts.find(p => p.id === item.id);
+                const product = toyProducts.find(p => p.id === item.id);
                 if (product) {
                     message += `  • ${item.quantity}x ${product.name}\n`;
                 }
             });
-            message += `\n¿Podrían confirmarme la disponibilidad y tiempo de entrega?`;
+            message += `\n¿Podrían confirmarme disponibilidad y tiempo de entrega?`;
             
-            // Codificar mensaje para URL de WhatsApp
             const encodedMessage = encodeURIComponent(message);
             const whatsappURL = `https://wa.me/593997595515?text=${encodedMessage}`;
             
-            // Limpiar carrito
             cart = [];
             updateCartUI();
+            toggleCart();
             
-            // Abrir WhatsApp
             window.open(whatsappURL, '_blank');
-            
-            // Cerrar carrito
-            cartModal.classList.remove('active');
-            
-            // Mostrar confirmación
             showNotification('¡Pedido de juguetes enviado por WhatsApp!');
         });
 
@@ -1720,44 +2175,52 @@
             currentUser = user;
             
             if (user) {
-                // Cargar productos cuando el usuario esté autenticado
-                loadToysProducts();
+                loadToyProducts();
                 
-                // Generar inicial para avatar
                 const initials = user.displayName 
                     ? user.displayName.split(' ').map(n => n[0]).join('').toUpperCase()
                     : user.email[0].toUpperCase();
+                
                 userAvatar.textContent = initials;
+                mobileUserAvatar.textContent = initials;
+                mobileUserName.textContent = user.displayName || 'Usuario';
+                mobileUserEmail.textContent = user.email || 'email@ejemplo.com';
                 
             } else {
-                // Si no hay usuario, redirigir al login
                 window.location.href = 'index.html';
             }
         });
 
         // Cerrar sesión
-        logoutBtn.addEventListener('click', async () => {
+        async function handleLogout() {
             try {
                 await signOut(auth);
                 window.location.href = 'index.html';
             } catch (error) {
                 alert('Error al cerrar sesión: ' + error.message);
             }
+        }
+
+        // Event Listeners
+        menuToggle.addEventListener('click', toggleMobileMenu);
+        mobileMenuOverlay.addEventListener('click', toggleMobileMenu);
+        cartIcon.addEventListener('click', toggleCart);
+        cartOverlay.addEventListener('click', toggleCart);
+        closeCart.addEventListener('click', toggleCart);
+        logoutBtn.addEventListener('click', handleLogout);
+        mobileLogoutBtn.addEventListener('click', handleLogout);
+
+        // Cerrar menús al hacer clic en enlaces
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                toggleMobileMenu();
+            });
         });
 
         // Inicializar
         updateCartCount();
 
-        // Cerrar carrito al hacer clic fuera
-        document.addEventListener('click', (e) => {
-            if (cartModal.classList.contains('active') && 
-                !cartModal.contains(e.target) && 
-                !cartIcon.contains(e.target)) {
-                cartModal.classList.remove('active');
-            }
-        });
-
-        console.log('Página de Juguetes de Heydin-Kayser inicializada');
+        console.log('Página de Juguetes de Heydin-Kayser inicializada - Versión Responsive');
     </script>
 </body>
 </html>
