@@ -32,7 +32,7 @@
             outline: none;
         }
 
-        /* HEADER */
+        /* HEADER RESPONSIVE */
         .header {
             display: flex;
             justify-content: space-between;
@@ -43,7 +43,6 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            flex-wrap: wrap;
         }
 
         .logo {
@@ -51,6 +50,7 @@
             align-items: center;
             gap: 10px;
             cursor: pointer;
+            z-index: 1001;
         }
 
         .logo i {
@@ -66,11 +66,30 @@
             font-weight: 700;
         }
 
+        /* MENU HAMBURGUESA */
+        .menu-toggle {
+            display: none;
+            background: none;
+            color: white;
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(74, 144, 226, 0.2);
+        }
+
+        /* NAV MENU DESPLEGABLE */
         .nav-menu {
             display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
+            gap: 10px;
+            align-items: center;
         }
 
         .nav-link {
@@ -81,6 +100,7 @@
             align-items: center;
             gap: 8px;
             font-weight: 500;
+            white-space: nowrap;
         }
 
         .nav-link:hover {
@@ -97,11 +117,12 @@
             font-size: 1.1rem;
         }
 
+        /* USER SECTION */
         .user-section {
             display: flex;
             align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
+            gap: 15px;
+            z-index: 1001;
         }
 
         .cart-icon {
@@ -137,7 +158,7 @@
         .user-avatar {
             width: 40px;
             height: 40px;
-            background: linear-gradient(45deg, #00b894, #00cec9);
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -163,320 +184,11 @@
             transform: translateY(-2px);
         }
 
-        /* HERO SECTION MUEBLES */
-        .hero-section {
-            position: relative;
-            padding: 80px 5%;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat;
-            opacity: 0.15;
-            z-index: -1;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero-title {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #00b894, #00cec9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: #81ecec;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        /* PRODUCTS SECTION */
-        .products-section {
-            padding: 60px 5%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 50px;
-            color: #00cec9;
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .product-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .product-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .product-info {
-            padding: 20px;
-        }
-
-        .product-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
-        }
-
-        .product-name {
-            font-size: 1.3rem;
-            color: #00cec9;
-            font-weight: 600;
-        }
-
-        .product-price {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #4caf50;
-            background: rgba(76, 175, 80, 0.1);
-            padding: 5px 15px;
-            border-radius: 20px;
-        }
-
-        .product-code {
-            color: #a0c8ff;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .product-desc {
-            color: #b0bec5;
-            font-size: 0.95rem;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .product-stock {
-            margin-bottom: 20px;
-            padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            border-left: 4px solid;
-        }
-
-        .stock-high {
-            border-left-color: #4caf50;
-        }
-
-        .stock-medium {
-            border-left-color: #ff9800;
-        }
-
-        .stock-low {
-            border-left-color: #f44336;
-        }
-
-        .stock-text {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 500;
-        }
-
-        .product-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            overflow: hidden;
-            flex: 1;
-        }
-
-        .quantity-btn {
-            width: 40px;
-            height: 40px;
-            background: rgba(74, 144, 226, 0.2);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            font-size: 1.2rem;
-        }
-
-        .quantity-btn:hover {
-            background: rgba(74, 144, 226, 0.4);
-        }
-
-        .quantity-input {
-            width: 60px;
-            height: 40px;
-            background: transparent;
-            border: none;
-            text-align: center;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .quantity-input::-webkit-inner-spin-button,
-        .quantity-input::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .buy-btn {
-            flex: 2;
-            padding: 0 20px;
-            background: linear-gradient(45deg, #00b894, #00cec9);
-            color: white;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            min-height: 40px;
-        }
-
-        .buy-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 184, 148, 0.4);
-        }
-
-        .add-to-cart-btn {
-            flex: 1;
-            padding: 0 15px;
-            background: rgba(74, 144, 226, 0.2);
-            color: #63b3ff;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            min-height: 40px;
-            border: 1px solid rgba(74, 144, 226, 0.3);
-        }
-
-        .add-to-cart-btn:hover {
-            background: rgba(74, 144, 226, 0.3);
-            transform: translateY(-2px);
-        }
-
-        /* FOOTER */
-        .footer {
-            background: rgba(15, 25, 60, 0.95);
-            padding: 60px 5% 30px;
-            margin-top: 60px;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-section h3 {
-            color: #63b3ff;
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-        }
-
-        .footer-links {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .footer-links a {
-            color: #a0c8ff;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .footer-links a:hover {
-            color: #4a90e2;
-            transform: translateX(5px);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .social-icon:hover {
-            background: #4a90e2;
-            transform: translateY(-3px);
-        }
-
-        .copyright {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #a0c8ff;
-        }
-
-        /* CART MODAL */
+        /* CART MODAL RESPONSIVE */
         .cart-modal {
             position: fixed;
             top: 0;
-            right: -400px;
+            right: -100%;
             width: 100%;
             max-width: 400px;
             height: 100vh;
@@ -490,6 +202,21 @@
 
         .cart-modal.active {
             right: 0;
+        }
+
+        .cart-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+        }
+
+        .cart-overlay.active {
+            display: block;
         }
 
         .cart-header {
@@ -547,6 +274,11 @@
         .cart-item-name {
             font-weight: 600;
             color: #63b3ff;
+        }
+
+        .cart-item-price {
+            color: #4caf50;
+            font-weight: bold;
         }
 
         .product-code {
@@ -657,6 +389,438 @@
             opacity: 0.5;
         }
 
+        /* HERO SECTION MUEBLES */
+        .hero-section {
+            position: relative;
+            padding: 60px 5%;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat;
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #8B4513, #D2691E);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: #D2B48C;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* PRODUCTS SECTION */
+        .products-section {
+            padding: 40px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #D2691E;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            color: #D2B48C;
+            font-weight: 600;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #4caf50;
+            background: rgba(76, 175, 80, 0.1);
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        .product-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .product-code {
+            color: #a0c8ff;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .product-material {
+            color: #ffcc80;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .product-desc {
+            color: #b0bec5;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .product-stock {
+            margin-bottom: 20px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .stock-high {
+            border-left-color: #4caf50;
+        }
+
+        .stock-medium {
+            border-left-color: #ff9800;
+        }
+
+        .stock-low {
+            border-left-color: #f44336;
+        }
+
+        .stock-text {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .product-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(74, 144, 226, 0.2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .quantity-btn:hover {
+            background: rgba(74, 144, 226, 0.4);
+        }
+
+        .quantity-input {
+            width: 60px;
+            height: 40px;
+            background: transparent;
+            border: none;
+            text-align: center;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .quantity-input::-webkit-inner-spin-button,
+        .quantity-input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .buy-btn {
+            padding: 12px;
+            background: linear-gradient(45deg, #8B4513, #D2691E);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.4);
+        }
+
+        .add-to-cart-btn {
+            padding: 12px;
+            background: rgba(74, 144, 226, 0.2);
+            color: #63b3ff;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            border: 1px solid rgba(74, 144, 226, 0.3);
+        }
+
+        .add-to-cart-btn:hover {
+            background: rgba(74, 144, 226, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* SEARCH AND FILTERS */
+        .search-container {
+            max-width: 600px;
+            margin: 30px auto 40px;
+            padding: 0 20px;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #D2691E;
+            box-shadow: 0 0 0 2px rgba(210, 105, 30, 0.3);
+        }
+
+        .search-btn {
+            padding: 0 25px;
+            background: linear-gradient(45deg, #8B4513, #D2691E);
+            color: white;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.4);
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a0c8ff;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover {
+            background: rgba(210, 105, 30, 0.2);
+            color: #D2B48C;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(45deg, #8B4513, #D2691E);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* CATEGORY FILTERS */
+        .category-filters {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        .category-btn {
+            padding: 10px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #D2B48C;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-btn:hover {
+            background: rgba(210, 105, 30, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .category-btn.active {
+            background: linear-gradient(45deg, #8B4513, #D2691E);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: rgba(15, 25, 60, 0.95);
+            padding: 40px 5% 30px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section h3 {
+            color: #63b3ff;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: #a0c8ff;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-links a:hover {
+            color: #4a90e2;
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: #4a90e2;
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a0c8ff;
+        }
+
         /* WHATSAPP BUTTON */
         .whatsapp-btn {
             position: fixed;
@@ -681,7 +845,7 @@
             box-shadow: 0 10px 30px rgba(37, 211, 102, 0.6);
         }
 
-        /* LOADING & ERROR STATES */
+        /* LOADING & ERROR */
         .loading {
             text-align: center;
             padding: 40px;
@@ -708,111 +872,109 @@
             text-align: center;
         }
 
-        /* SEARCH BAR */
-        .search-container {
-            max-width: 600px;
-            margin: 30px auto 50px;
-            padding: 0 20px;
-        }
-
-        .search-bar {
+        /* MENU DESPLEGABLE MOBILE */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            max-width: 300px;
+            height: 100vh;
+            background: rgba(15, 25, 60, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            transition: left 0.3s ease;
             display: flex;
-            gap: 10px;
+            flex-direction: column;
+            padding-top: 80px;
         }
 
-        .search-input {
-            flex: 1;
+        .mobile-menu.active {
+            left: 0;
+        }
+
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+        }
+
+        .mobile-menu-overlay.active {
+            display: block;
+        }
+
+        .mobile-nav {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .mobile-nav-link {
             padding: 15px 20px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #00cec9;
-            box-shadow: 0 0 0 2px rgba(0, 206, 201, 0.3);
-        }
-
-        .search-btn {
-            padding: 0 30px;
-            background: linear-gradient(45deg, #00b894, #00cec9);
-            color: white;
-            border-radius: 10px;
-            font-weight: 600;
+            border-radius: 8px;
+            margin-bottom: 10px;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .search-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 184, 148, 0.4);
-        }
-
-        /* FILTERS */
-        .filters {
-            display: flex;
-            justify-content: center;
             gap: 15px;
-            flex-wrap: wrap;
-            margin-bottom: 40px;
-            padding: 0 20px;
+            font-size: 1.1rem;
+            border-left: 4px solid transparent;
         }
 
-        .filter-btn {
-            padding: 10px 25px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #a0c8ff;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            font-weight: 500;
+        .mobile-nav-link:hover {
+            background: rgba(74, 144, 226, 0.2);
+            transform: translateX(5px);
         }
 
-        .filter-btn:hover {
-            background: rgba(0, 206, 201, 0.2);
-            color: #00cec9;
-            transform: translateY(-2px);
+        .mobile-nav-link.active {
+            background: rgba(74, 144, 226, 0.3);
+            border-left-color: #4a90e2;
         }
 
-        .filter-btn.active {
-            background: linear-gradient(45deg, #00b894, #00cec9);
-            color: white;
-            border-color: transparent;
+        .mobile-user-section {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: auto;
+        }
+
+        .mobile-user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
         /* RESPONSIVE DESIGN */
         @media (max-width: 1024px) {
             .hero-title {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
             }
             
             .section-title {
-                font-size: 2rem;
+                font-size: 1.8rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             }
         }
 
         @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 15px;
-                padding: 15px 20px;
+            .menu-toggle {
+                display: flex;
             }
             
             .nav-menu {
-                order: 3;
-                width: 100%;
-                justify-content: center;
-                margin-top: 10px;
+                display: none;
             }
             
-            .user-section {
-                order: 2;
+            .user-section .logout-btn {
+                display: none;
             }
             
             .hero-title {
@@ -823,24 +985,6 @@
                 font-size: 1rem;
             }
             
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            }
-            
-            .product-actions {
-                flex-direction: column;
-            }
-            
-            .quantity-controls,
-            .buy-btn,
-            .add-to-cart-btn {
-                width: 100%;
-            }
-            
-            .cart-modal {
-                max-width: 100%;
-            }
-            
             .search-bar {
                 flex-direction: column;
             }
@@ -848,44 +992,82 @@
             .search-btn {
                 width: 100%;
                 justify-content: center;
+                padding: 15px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .cart-modal {
+                max-width: 100%;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .category-filters {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 10px;
+            }
+            
+            .category-btn {
+                flex-shrink: 0;
             }
         }
 
         @media (max-width: 480px) {
-            .nav-menu {
-                flex-direction: column;
-                align-items: center;
+            .header {
+                padding: 15px;
             }
             
-            .nav-link {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .user-section {
-                flex-direction: column;
-                width: 100%;
-                align-items: stretch;
-            }
-            
-            .logout-btn {
-                justify-content: center;
+            .company-name {
+                font-size: 1.2rem;
             }
             
             .hero-title {
                 font-size: 1.8rem;
             }
             
+            .hero-section {
+                padding: 40px 20px;
+            }
+            
             .section-title {
                 font-size: 1.5rem;
+                margin-bottom: 30px;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
             
             .product-card {
                 margin: 0 10px;
             }
             
-            .footer-content {
-                grid-template-columns: 1fr;
+            .filters, .category-filters {
+                gap: 8px;
+                padding: 0 10px;
+            }
+            
+            .filter-btn, .category-btn {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+            
+            .user-avatar {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            
+            .cart-icon {
+                padding: 6px;
             }
             
             .whatsapp-btn {
@@ -926,16 +1108,47 @@
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(74, 144, 226, 0.7);
         }
+
+        /* SPECIAL FEATURES FOR FURNITURE */
+        .dimensions {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #a0c8ff;
+        }
+
+        .dimensions span {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .feature-badge {
+            background: rgba(210, 105, 30, 0.2);
+            color: #D2B48C;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header class="header">
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        
         <div class="logo" onclick="window.location.href='home.html'">
             <i class="fas fa-store"></i>
             <h1 class="company-name">HEYDIN-KAYSER</h1>
         </div>
         
+        <!-- Desktop Navigation -->
         <nav class="nav-menu">
             <a href="home.html" class="nav-link">
                 <i class="fas fa-home"></i> Inicio
@@ -968,14 +1181,52 @@
         </div>
     </header>
 
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <nav class="mobile-nav">
+            <a href="home.html" class="mobile-nav-link">
+                <i class="fas fa-home"></i> Inicio
+            </a>
+            <a href="comida.html" class="mobile-nav-link">
+                <i class="fas fa-utensils"></i> Comida
+            </a>
+            <a href="muebles.html" class="mobile-nav-link active">
+                <i class="fas fa-couch"></i> Muebles
+            </a>
+            <a href="juguetes.html" class="mobile-nav-link">
+                <i class="fas fa-gamepad"></i> Juguetes
+            </a>
+            <a href="bisuteria.html" class="mobile-nav-link">
+                <i class="fas fa-gem"></i> Bisutería
+            </a>
+        </nav>
+        
+        <div class="mobile-user-section">
+            <div class="mobile-user-info">
+                <div class="user-avatar" id="mobileUserAvatar">U</div>
+                <div>
+                    <div id="mobileUserName">Usuario</div>
+                    <div id="mobileUserEmail" style="font-size: 0.9rem; color: #a0c8ff;">email@ejemplo.com</div>
+                </div>
+            </div>
+            
+            <button class="logout-btn" id="mobileLogoutBtn" style="width: 100%; justify-content: center;">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </button>
+        </div>
+    </div>
+
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="hero-bg"></div>
         <div class="hero-content">
-            <h1 class="hero-title">Muebles Elegantes para tu Hogar</h1>
+            <h1 class="hero-title">Muebles de Calidad y Diseño</h1>
             <p class="hero-subtitle">
-                Descubre nuestra colección exclusiva de muebles diseñados para transformar tus espacios 
-                en lugares únicos, cómodos y con estilo. Calidad garantizada en cada pieza.
+                Descubre nuestra colección exclusiva de muebles para cada espacio de tu hogar. 
+                Combinamos diseño, confort y durabilidad en cada pieza.
             </p>
         </div>
     </section>
@@ -983,11 +1234,33 @@
     <!-- Search and Filters -->
     <div class="search-container">
         <div class="search-bar">
-            <input type="text" class="search-input" id="searchInput" placeholder="Buscar muebles...">
+            <input type="text" class="search-input" id="searchInput" placeholder="Buscar muebles por nombre, material o tipo...">
             <button class="search-btn" id="searchBtn">
                 <i class="fas fa-search"></i> Buscar
             </button>
         </div>
+    </div>
+
+    <!-- Category Filters -->
+    <div class="category-filters">
+        <button class="category-btn active" data-category="all">
+            <i class="fas fa-th-large"></i> Todos
+        </button>
+        <button class="category-btn" data-category="sala">
+            <i class="fas fa-couch"></i> Sala
+        </button>
+        <button class="category-btn" data-category="dormitorio">
+            <i class="fas fa-bed"></i> Dormitorio
+        </button>
+        <button class="category-btn" data-category="comedor">
+            <i class="fas fa-utensils"></i> Comedor
+        </button>
+        <button class="category-btn" data-category="oficina">
+            <i class="fas fa-briefcase"></i> Oficina
+        </button>
+        <button class="category-btn" data-category="exterior">
+            <i class="fas fa-umbrella-beach"></i> Exterior
+        </button>
     </div>
 
     <div class="filters">
@@ -1011,7 +1284,7 @@
         </div>
         
         <div class="products-grid" id="productsGrid">
-            <!-- Los productos se cargarán aquí desde Firestore -->
+            <!-- Los muebles se cargarán aquí desde Firestore -->
         </div>
     </section>
 
@@ -1021,8 +1294,8 @@
             <div class="footer-section">
                 <h3>Heydin-Kayser</h3>
                 <p style="color: #a0c8ff; line-height: 1.6;">
-                    Tu tienda de confianza para productos de alta calidad. 
-                    Comidas, muebles, juguetes y bisutería con los mejores precios.
+                    Tu tienda de confianza para muebles de alta calidad. 
+                    Diseño, confort y durabilidad en cada pieza.
                 </p>
                 <div class="social-links">
                     <a href="#" class="social-icon">
@@ -1032,7 +1305,7 @@
                         <i class="fab fa-instagram"></i>
                     </a>
                     <a href="#" class="social-icon">
-                        <i class="fab fa-twitter"></i>
+                        <i class="fab fa-pinterest"></i>
                     </a>
                     <a href="#" class="social-icon">
                         <i class="fab fa-tiktok"></i>
@@ -1064,22 +1337,26 @@
                     <a href="tel:+593997595515">
                         <i class="fas fa-phone"></i> +593 99 759 5515
                     </a>
-                    <a href="mailto:ventas@heydin-kayser.com">
-                        <i class="fas fa-envelope"></i> ventas@heydin-kayser.com
+                    <a href="mailto:muebles@heydin-kayser.com">
+                        <i class="fas fa-envelope"></i> muebles@heydin-kayser.com
                     </a>
                     <a href="https://wa.me/593997595515" target="_blank">
                         <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                    <a href="#">
+                        <i class="fas fa-map-marker-alt"></i> Consulta por envíos
                     </a>
                 </div>
             </div>
         </div>
         
         <div class="copyright">
-            © 2023 Heydin-Kayser. Todos los derechos reservados.
+            © 2023 Heydin-Kayser Muebles. Todos los derechos reservados.
         </div>
     </footer>
 
     <!-- Cart Modal -->
+    <div class="cart-overlay" id="cartOverlay"></div>
     <div class="cart-modal" id="cartModal">
         <div class="cart-header">
             <h3><i class="fas fa-shopping-cart"></i> Carrito de Compras</h3>
@@ -1087,7 +1364,7 @@
         </div>
         
         <div class="cart-items" id="cartItems">
-            <!-- Los productos del carrito se mostrarán aquí -->
+            <!-- Los muebles del carrito se mostrarán aquí -->
         </div>
         
         <div class="cart-footer">
@@ -1096,7 +1373,7 @@
                 <span class="total-amount" id="cartTotal">$0.00</span>
             </div>
             <button class="checkout-btn" id="checkoutBtn">
-                <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
+                <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
             </button>
         </div>
     </div>
@@ -1122,7 +1399,7 @@
             onSnapshot
         } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // Tu configuración de Firebase
+        // Configuración de Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCpFnSLx-ZUq6j27T-w_nvsdSvUrNs688g",
             authDomain: "heyding-kayser.firebaseapp.com",
@@ -1144,11 +1421,20 @@
         let furnitureProducts = [];
         let currentUser = null;
         let currentFilter = 'all';
+        let currentCategory = 'all';
 
         // Elementos del DOM
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+        const mobileUserAvatar = document.getElementById('mobileUserAvatar');
+        const mobileUserName = document.getElementById('mobileUserName');
+        const mobileUserEmail = document.getElementById('mobileUserEmail');
         const cartIcon = document.getElementById('cartIcon');
         const cartCount = document.getElementById('cartCount');
         const cartModal = document.getElementById('cartModal');
+        const cartOverlay = document.getElementById('cartOverlay');
         const closeCart = document.getElementById('closeCart');
         const cartItems = document.getElementById('cartItems');
         const cartTotal = document.getElementById('cartTotal');
@@ -1161,14 +1447,31 @@
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
         const filterButtons = document.querySelectorAll('.filter-btn');
+        const categoryButtons = document.querySelectorAll('.category-btn');
 
-        // Función para cargar productos de muebles desde Firestore
+        // Función para abrir/cerrar menú móvil
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('active');
+            mobileMenuOverlay.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        }
+
+        // Función para abrir/cerrar carrito
+        function toggleCart() {
+            cartModal.classList.toggle('active');
+            cartOverlay.classList.toggle('active');
+            document.body.style.overflow = cartModal.classList.contains('active') ? 'hidden' : '';
+            if (cartModal.classList.contains('active')) {
+                updateCartUI();
+            }
+        }
+
+        // Función para cargar muebles desde Firestore
         function loadFurnitureProducts() {
             try {
                 loadingElement.style.display = 'block';
                 productsError.style.display = 'none';
                 
-                // Consultar solo productos de muebles
                 const q = query(
                     collection(db, "products"),
                     where("category", "==", "muebles")
@@ -1186,7 +1489,6 @@
                         furnitureProducts.push(product);
                     });
                     
-                    // Mostrar productos (ordenaremos localmente)
                     displayProducts(furnitureProducts);
                     loadingElement.style.display = 'none';
                     
@@ -1216,19 +1518,24 @@
                 productsGrid.innerHTML = `
                     <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #a0c8ff;">
                         <i class="fas fa-couch fa-3x" style="margin-bottom: 20px;"></i>
-                        <p style="font-size: 1.2rem;">No se encontraron muebles en esta categoría</p>
+                        <p style="font-size: 1.2rem;">No se encontraron muebles</p>
                     </div>
                 `;
                 return;
             }
             
-            // Ordenar localmente por nombre
             let sortedProducts = [...products];
             sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
             
-            // Aplicar filtro actual
+            // Filtrar por categoría
             let filteredProducts = [...sortedProducts];
+            if (currentCategory !== 'all') {
+                filteredProducts = filteredProducts.filter(p => 
+                    p.subcategory && p.subcategory.toLowerCase() === currentCategory
+                );
+            }
             
+            // Aplicar filtro de orden/stock
             switch(currentFilter) {
                 case 'stock-high':
                     filteredProducts = filteredProducts.filter(p => p.stock > 5);
@@ -1251,6 +1558,13 @@
                 const stockText = product.stock > 5 ? 'Disponible' :
                                 product.stock > 0 ? 'Poco Stock' : 'Agotado';
                 
+                // Obtener icono según subcategoría
+                let categoryIcon = 'fa-couch';
+                if (product.subcategory === 'dormitorio') categoryIcon = 'fa-bed';
+                if (product.subcategory === 'comedor') categoryIcon = 'fa-utensils';
+                if (product.subcategory === 'oficina') categoryIcon = 'fa-briefcase';
+                if (product.subcategory === 'exterior') categoryIcon = 'fa-umbrella-beach';
+                
                 const productCard = document.createElement('div');
                 productCard.className = 'product-card';
                 productCard.innerHTML = `
@@ -1261,15 +1575,37 @@
                     
                     <div class="product-info">
                         <div class="product-header">
-                            <h3 class="product-name">${product.name}</h3>
+                            <h3 class="product-name">
+                                <i class="fas ${categoryIcon}"></i> ${product.name}
+                            </h3>
                             <div class="product-price">$${parseFloat(product.price).toFixed(2)}</div>
                         </div>
                         
-                        <div class="product-code">
-                            <i class="fas fa-barcode"></i> Código: ${product.id}
+                        <div class="product-meta">
+                            <div class="product-code">
+                                <i class="fas fa-barcode"></i> Código: ${product.id}
+                            </div>
+                            <div class="product-material">
+                                <i class="fas fa-tree"></i> Material: ${product.material || 'Madera'}
+                            </div>
                         </div>
                         
-                        <p class="product-desc">${product.description || 'Mueble elegante y funcional para tu hogar.'}</p>
+                        ${product.dimensions ? `
+                            <div class="dimensions">
+                                <span><i class="fas fa-ruler-combined"></i> Dimensiones:</span>
+                                <span>${product.dimensions}</span>
+                            </div>
+                        ` : ''}
+                        
+                        <p class="product-desc">${product.description || 'Mueble de alta calidad, diseño moderno y gran durabilidad.'}</p>
+                        
+                        ${product.features ? `
+                            <div style="margin-bottom: 15px;">
+                                ${product.features.split(',').map(feature => 
+                                    `<span class="feature-badge">${feature.trim()}</span>`
+                                ).join('')}
+                            </div>
+                        ` : ''}
                         
                         <div class="product-stock ${stockClass}">
                             <div class="stock-text">
@@ -1292,7 +1628,7 @@
                             </div>
                             
                             <button class="buy-btn" onclick="buyNow('${product.id}')" ${product.stock === 0 ? 'disabled style="opacity:0.5;"' : ''}>
-                                <i class="fas fa-bolt"></i> Comprar
+                                <i class="fas fa-bolt"></i> Consultar
                             </button>
                             
                             <button class="add-to-cart-btn" onclick="addToCart('${product.id}')" ${product.stock === 0 ? 'disabled style="opacity:0.5;"' : ''}>
@@ -1417,7 +1753,7 @@
 
         // Eliminar producto del carrito
         window.removeFromCart = function(index) {
-            if (confirm('¿Estás seguro de eliminar este producto del carrito?')) {
+            if (confirm('¿Estás seguro de eliminar este mueble del carrito?')) {
                 cart.splice(index, 1);
                 updateCartUI();
             }
@@ -1431,7 +1767,7 @@
             const product = furnitureProducts.find(p => p.id === productId);
             
             if (!product) {
-                alert('Producto no encontrado');
+                alert('Mueble no encontrado');
                 return;
             }
             
@@ -1457,11 +1793,10 @@
             updateCartUI();
             showNotification(`¡${product.name} agregado al carrito!`);
             
-            // Resetear cantidad
             quantityInput.value = 1;
         }
 
-        // Comprar directamente
+        // Comprar/consultar directamente
         window.buyNow = function(productId) {
             const quantityInput = document.getElementById(`quantity-${productId}`);
             const quantity = parseInt(quantityInput.value) || 1;
@@ -1469,7 +1804,7 @@
             const product = furnitureProducts.find(p => p.id === productId);
             
             if (!product) {
-                alert('Producto no encontrado');
+                alert('Mueble no encontrado');
                 return;
             }
             
@@ -1479,17 +1814,10 @@
                 return;
             }
             
-            // Limpiar carrito y agregar solo este producto
             cart = [{ id: productId, quantity }];
             updateCartUI();
-            cartModal.classList.add('active');
+            toggleCart();
             
-            // Scroll al carrito
-            setTimeout(() => {
-                cartModal.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-            
-            // Resetear cantidad
             quantityInput.value = 1;
         }
 
@@ -1516,7 +1844,7 @@
             }, 3000);
         }
 
-        // Buscar productos
+        // Buscar muebles
         searchBtn.addEventListener('click', searchProducts);
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') searchProducts();
@@ -1533,6 +1861,8 @@
             const filtered = furnitureProducts.filter(product => 
                 product.name.toLowerCase().includes(searchTerm) ||
                 (product.description && product.description.toLowerCase().includes(searchTerm)) ||
+                (product.material && product.material.toLowerCase().includes(searchTerm)) ||
+                (product.subcategory && product.subcategory.toLowerCase().includes(searchTerm)) ||
                 product.id.toLowerCase().includes(searchTerm)
             );
             
@@ -1547,7 +1877,7 @@
             }
         }
 
-        // Filtros
+        // Filtros generales
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
                 filterButtons.forEach(btn => btn.classList.remove('active'));
@@ -1557,24 +1887,24 @@
             });
         });
 
-        // Abrir/Cerrar carrito
-        cartIcon.addEventListener('click', () => {
-            cartModal.classList.add('active');
-            updateCartUI();
+        // Filtros por categoría
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                currentCategory = button.dataset.category;
+                displayProducts(furnitureProducts);
+            });
         });
 
-        closeCart.addEventListener('click', () => {
-            cartModal.classList.remove('active');
-        });
-
-        // Comprar por WhatsApp
+        // Consultar por WhatsApp
         checkoutBtn.addEventListener('click', async () => {
             if (cart.length === 0) {
                 alert('Tu carrito está vacío');
                 return;
             }
             
-            let message = `¡Hola! Quiero hacer un pedido en Heydin-Kayser (Muebles):\n\n`;
+            let message = `¡Hola! Estoy interesado en los siguientes muebles de Heydin-Kayser:\n\n`;
             let total = 0;
             
             cart.forEach(item => {
@@ -1582,28 +1912,29 @@
                 if (product) {
                     const itemTotal = product.price * item.quantity;
                     total += itemTotal;
-                    message += `🛋️ *${product.name}*\n`;
+                    message += `🪑 *${product.name}*\n`;
                     message += `  Código: ${product.id}\n`;
                     message += `  Cantidad: ${item.quantity}\n`;
+                    message += `  Material: ${product.material || 'No especificado'}\n`;
                     message += `  Precio unitario: $${parseFloat(product.price).toFixed(2)}\n`;
                     message += `  Subtotal: $${itemTotal.toFixed(2)}\n\n`;
                 }
             });
             
-            message += `💰 *TOTAL A PAGAR: $${total.toFixed(2)}*\n\n`;
+            message += `💰 *VALOR TOTAL: $${total.toFixed(2)}*\n\n`;
             message += `👤 *Información del Cliente:*\n`;
             message += `  Nombre: ${currentUser?.displayName || '[Por favor ingresa tu nombre]'}\n`;
             message += `  Email: ${currentUser?.email || '[Por favor ingresa tu email]'}\n`;
             message += `  Teléfono: [Por favor ingresa tu número]\n`;
             message += `  Dirección: [Por favor ingresa tu dirección]\n\n`;
-            message += `🚚 *Información de Entrega:*\n`;
+            message += `🚚 *Información de Envío:*\n`;
             message += `  Ciudad: ______\n`;
-            message += `  Sector/Barrio: ______\n`;
+            message += `  Sector: ______\n`;
             message += `  Referencia: ______\n\n`;
-            message += `📦 *Instrucciones Especiales:*\n`;
-            message += `  ¿Requiere montaje/instalación? ______\n`;
-            message += `  ¿Piso para entrega? ______\n`;
-            message += `  ¿Alguna restricción de acceso? ______\n\n`;
+            message += `💡 *Consultas:*\n`;
+            message += `  1. ¿Disponen de servicio de entrega e instalación?\n`;
+            message += `  2. ¿Cuál es el tiempo de entrega estimado?\n`;
+            message += `  3. ¿Tienen garantía los muebles?\n\n`;
             message += `📋 *Resumen del Pedido:*\n`;
             cart.forEach(item => {
                 const product = furnitureProducts.find(p => p.id === item.id);
@@ -1611,24 +1942,17 @@
                     message += `  • ${item.quantity}x ${product.name}\n`;
                 }
             });
-            message += `\n¿Podrían confirmarme la disponibilidad, tiempo de entrega y costo de envío?`;
+            message += `\n¿Podrían confirmarme disponibilidad y condiciones de envío?`;
             
-            // Codificar mensaje para URL de WhatsApp
             const encodedMessage = encodeURIComponent(message);
             const whatsappURL = `https://wa.me/593997595515?text=${encodedMessage}`;
             
-            // Limpiar carrito
             cart = [];
             updateCartUI();
+            toggleCart();
             
-            // Abrir WhatsApp
             window.open(whatsappURL, '_blank');
-            
-            // Cerrar carrito
-            cartModal.classList.remove('active');
-            
-            // Mostrar confirmación
-            showNotification('¡Pedido de muebles enviado por WhatsApp!');
+            showNotification('¡Consulta de muebles enviada por WhatsApp!');
         });
 
         // Autenticación
@@ -1636,44 +1960,52 @@
             currentUser = user;
             
             if (user) {
-                // Cargar productos cuando el usuario esté autenticado
                 loadFurnitureProducts();
                 
-                // Generar inicial para avatar
                 const initials = user.displayName 
                     ? user.displayName.split(' ').map(n => n[0]).join('').toUpperCase()
                     : user.email[0].toUpperCase();
+                
                 userAvatar.textContent = initials;
+                mobileUserAvatar.textContent = initials;
+                mobileUserName.textContent = user.displayName || 'Usuario';
+                mobileUserEmail.textContent = user.email || 'email@ejemplo.com';
                 
             } else {
-                // Si no hay usuario, redirigir al login
                 window.location.href = 'index.html';
             }
         });
 
         // Cerrar sesión
-        logoutBtn.addEventListener('click', async () => {
+        async function handleLogout() {
             try {
                 await signOut(auth);
                 window.location.href = 'index.html';
             } catch (error) {
                 alert('Error al cerrar sesión: ' + error.message);
             }
+        }
+
+        // Event Listeners
+        menuToggle.addEventListener('click', toggleMobileMenu);
+        mobileMenuOverlay.addEventListener('click', toggleMobileMenu);
+        cartIcon.addEventListener('click', toggleCart);
+        cartOverlay.addEventListener('click', toggleCart);
+        closeCart.addEventListener('click', toggleCart);
+        logoutBtn.addEventListener('click', handleLogout);
+        mobileLogoutBtn.addEventListener('click', handleLogout);
+
+        // Cerrar menús al hacer clic en enlaces
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                toggleMobileMenu();
+            });
         });
 
         // Inicializar
         updateCartCount();
 
-        // Cerrar carrito al hacer clic fuera
-        document.addEventListener('click', (e) => {
-            if (cartModal.classList.contains('active') && 
-                !cartModal.contains(e.target) && 
-                !cartIcon.contains(e.target)) {
-                cartModal.classList.remove('active');
-            }
-        });
-
-        console.log('Página de Muebles de Heydin-Kayser inicializada');
+        console.log('Página de Muebles de Heydin-Kayser inicializada - Versión Responsive');
     </script>
 </body>
 </html>
